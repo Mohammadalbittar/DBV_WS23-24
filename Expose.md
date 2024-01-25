@@ -1,0 +1,3 @@
+Exposé Kreuzung Verkehrsanalyse
+ 
+In unserem Forschungsprojekt konzentrieren wir uns auf die Anwendung herkömmlicher Computer Vision-Methoden zur Verkehrsanalyse, ohne auf fortgeschrittene Techniken wie Machine Learning oder Künstliche Intelligenz zurückzugreifen. Durch die gezielte Nutzung von Bildverarbeitungsalgorithmen und klassischer Mustererkennung streben wir an, präzise und effiziente Lösungen für die Verkehrsüberwachung und mögliche Verkehrsoptimierung zu entwickeln. Unser Ansatz betont die Robustheit und Rechenleistung konventioneller CV-Methoden, um eine kosteneffektive und zugängliche Alternative zu modernen, ressourcenintensiven Ansätzen zu bieten.
