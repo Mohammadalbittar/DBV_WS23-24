@@ -29,3 +29,6 @@ https://youtu.be/_90Skumc_Zw
 
 Traffic Intersection Simulation using Pygame (Part 2)
 https://youtu.be/Kq-G5G1XAa0
+
+Object Detection in 10 minutes with YOLOv5 & Python!
+https://www.youtube.com/watch?v=fu2tfOV9vbY
