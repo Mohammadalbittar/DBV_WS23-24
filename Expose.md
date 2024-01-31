@@ -15,3 +15,18 @@ Schritte und Probelem:
 - Fußgänger/ Autos unterscheiden (ohne ML schwer, mit ML easy)
 - Statistik Verkehrsfluss 
 - Geschwindigkeit bestimmen -> (Dense Optical FLow (Lucas-Kanade method))
+
+
+Hallo Jan,
+
+klingt soweit gut. Versucht das Ganze vielleicht bis zur Exposé Abgabe noch ein wenig zu konkretisieren,
+falls möglich. Vielleicht könnt ihr schon verschiedene Schritte und Probleme identifizieren die ihr auf
+jeden Fall lösen müsstet, und was eventuell optional wäre.
+Für das initiale Detektieren von Objekten würde ich fertige ML Modelle (z.B. YOLO)
+vielleicht nicht komplett rauswerfen, die machen einem das Leben schon deutlich einfacher.
+Es wäre auch super, wenn ihr nochmal kurz beschreiben könntet, was ihr genau als
+Output anstrebt. Trajektorien von Fahrzeugen? Zustände (wartend, über rote Ampel gefahren...)?
+Statistiken (z.B. durchschnittlicher "Fluss" in und aus der Kreuzung)?
+
+Viele Grüße
+Fabian
