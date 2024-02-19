@@ -32,3 +32,7 @@ https://youtu.be/Kq-G5G1XAa0
 
 Object Detection in 10 minutes with YOLOv5 & Python!
 https://www.youtube.com/watch?v=fu2tfOV9vbY
+
+
+EarthCam Live: Times Square in 4K 
+https://www.youtube.com/watch?v=UVftxDFol90
