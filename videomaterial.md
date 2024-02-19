@@ -36,3 +36,6 @@ https://www.youtube.com/watch?v=fu2tfOV9vbY
 
 EarthCam Live: Times Square in 4K 
 https://www.youtube.com/watch?v=UVftxDFol90
+
+Kreuzung Video 
+https://www.youtube.com/watch?v=Ellzen6Z7t8
