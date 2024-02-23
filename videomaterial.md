@@ -39,3 +39,6 @@ https://www.youtube.com/watch?v=UVftxDFol90
 
 Kreuzung Video 
 https://www.youtube.com/watch?v=Ellzen6Z7t8
+
+Kreuzung Video 2 (ohne Baum)
+https://www.youtube.com/watch?v=2X27I6BAJcI
