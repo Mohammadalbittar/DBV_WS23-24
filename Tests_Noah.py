@@ -3,12 +3,13 @@ import math
 import cv2 as cv
 import numpy as np
 import functions_n as fn
+import data_plot
 
 #list = [[auto, ein, aus],[]] sliching operator
 
 ### TEST ###
 #Initialisierung
-path = r'C:\Noah\Studium Lokal\Master\DBV_Abschlussprojekt\TestVideo1.mp4'  # Videopfad
+path = 'test_video.mp4'  # Videopfad
 ot = fn.Objecttracking()    # ot als Objekt der Klasse Objecttracking definiert
 change_roi = False
 
@@ -69,6 +70,7 @@ while True:
         print("")
     print(ot.car_in_out)
         #print(id, ot.dist_to_line())
+    data_plot.plotData(ot.car_in_out, cap)
 
 
     cv.line(frame, (ot.crossing_lines[0][0], ot.crossing_lines[0][1]), (ot.crossing_lines[0][2], ot.crossing_lines[0][3]), (0, 0, 255), 2)  # links

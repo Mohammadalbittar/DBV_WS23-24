@@ -1,7 +1,7 @@
 # Datei-Typen
 *.avi
 *.pt
-*.mp4
+# *.mp4
 
 
 
