@@ -49,6 +49,7 @@ def get_livestream(url:str):        #Funktioniert nicht
 
 
 def dense_optical_flow_outer(initial_frame):
+    # Lukas Kanade Dense optical flow. Returns the frame, a flow image, the magnitude and the angle mask
     # Convert the initial frame to grayscale
     old_frame = cv.cvtColor(initial_frame, cv.COLOR_BGR2GRAY)
 
@@ -84,7 +85,7 @@ def dense_optical_flow_outer(initial_frame):
         # Update the previous frame
         old_frame = current_frame.copy()
 
-        return frame, bgr_flow
+        return frame, bgr_flow, mag, ang
 
     return dense_optical_flow_inner
 
