@@ -2,8 +2,8 @@ import math
 
 import cv2 as cv
 import numpy as np
-import functions_n as fn
-import data_plot
+import project.functions_n as fn
+import project.data_plot as data_plot
 
 #list = [[auto, ein, aus],[]] sliching operator
 
