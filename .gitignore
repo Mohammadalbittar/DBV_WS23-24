@@ -1,11 +1,12 @@
 # Datei-Typen
 *.avi
 *.pt
-*.mp4
-
+# *.mp4
+.json
 
 
 video/*
+.idea/*
 
 
 
