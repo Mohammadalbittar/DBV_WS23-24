@@ -2,7 +2,7 @@
 *.avi
 *.pt
 # *.mp4
-
+.json
 
 
 video/*

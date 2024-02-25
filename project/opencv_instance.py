@@ -52,6 +52,10 @@ def dense_optical_flow_outer(initial_frame):
         # Convert the flow field to polar coordinates
         mag, ang = cv.cartToPolar(flow[..., 0], flow[..., 1])
 
+        cv.imshow('mag', mag)
+        #ang = mag*ang
+        #cv.imshow('ang', ang)
+
         # Normalize the magnitude for better visualization
 
         hsv[..., 0] = ang * 180 / np.pi / 2
@@ -73,7 +77,7 @@ def dense_optical_flow_outer(initial_frame):
 
 def background_sub(methode: Union['mog', 'knn', 'cnt', 'gmg' ]):
     if methode == 'mog':
-        backSub = cv.createBackgroundSubtractorMOG2(history=0, varThreshold=50, detectShadows=False)
+        backSub = cv.createBackgroundSubtractorMOG2(history=500, varThreshold=50, detectShadows=False)
         print('MOG 2 Selected')
     elif methode == 'knn':
         backSub = cv.createBackgroundSubtractorKNN()
@@ -109,7 +113,7 @@ def motion_extraction(first_frame):
     def motion_extraction2(frame):
         nonlocal first_frame
         frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
-        frame = cv.GaussianBlur(frame, (11, 11), 15)
+        frame = cv.GaussianBlur(frame, (11, 11), 5)
         if first_frame is not None:
             result = cv.addWeighted(first_frame, 0.5, cv.bitwise_not(frame), 0.5, 0)
             #result = abs(result - (255//2))
