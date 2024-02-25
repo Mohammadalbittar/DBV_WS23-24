@@ -5,12 +5,11 @@ import numpy as np
 import functions_n as fn
 import data_plot
 
-#list = [[auto, ein, aus],[]] sliching operator
-
 ### TEST ###
 #Initialisierung
-path = 'test_video.mp4'  # Videopfad
+path = r'C:\Noah\Studium Lokal\Master\DBV_Abschlussprojekt\TestVideo1.mp4'  # Videopfad
 ot = fn.Objecttracking()    # ot als Objekt der Klasse Objecttracking definiert
+object_detector = cv.createBackgroundSubtractorMOG2(history=100, varThreshold=60)
 change_roi = False
 
 #KERNALS
@@ -22,7 +21,7 @@ kernal_e = np.ones((5,5),np.uint8)
 
 #########
 
-if change_roi:
+if change_roi:  # Wenn True, kann die roi mit der Funktion ot.set_roi angepasst werden
     ot.set_roi(ot.Imgage_from_Video(path, 100))
 
 cap = cv.VideoCapture(path)
@@ -32,7 +31,6 @@ while True:
     cv.imshow('Region of Interest', roi)
 
     # Masking methode 1
-    object_detector = cv.createBackgroundSubtractorMOG2(history=100, varThreshold=60)
     mask = object_detector.apply(roi)
     _, mask = cv.threshold(mask, 254, 255, cv.THRESH_BINARY)
 
@@ -43,34 +41,32 @@ while True:
     mask2 = cv.morphologyEx(mask1, cv.MORPH_CLOSE, kernalCl)
     e_img = cv.erode(mask2, kernal_e)
 
-    #contours, _ = cv.findContours(mask, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)   #mask1
-    contours, _ = cv.findContours(e_img, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE) #mask2
+    contours, _ = cv.findContours(mask, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)   #mask1
+    #contours, _ = cv.findContours(e_img, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE) #mask2
     bounding_boxes = []
 
-
     for cnt in contours:
-        area = cv.contourArea(cnt)
-        if area > 600:
+        area = cv.contourArea(cnt)  # Berechnet die Fläche der erkannten Kontur
+        if area > 600:  # Zeichnet ein Rechteck (BB) um die Kontur, wenn die Fläche einen Schwellwert überschreitet
             x, y, w, h = cv.boundingRect(cnt)
-            bounding_boxes.append([x, y, w, h])
+            bounding_boxes.append([x, y, w, h]) # Koordinaten der BB in einer Liste speichern
 
-    boxes_ids = ot.add_new_vehicle(bounding_boxes)
-    for box_id in boxes_ids:
+    boxes_ids = ot.add_new_vehicle(bounding_boxes)  # Trackingfunktion auf die BB anwenden
+    for box_id in boxes_ids:    # Aktualisiert die gezeichneten BB, Mittelpunkte und Fahrzeug-IDs
         x, y, w, h, cx, cy, id = box_id
         cv.circle(roi, (cx,cy), 5, (0, 0, 255), -1)
         cv.putText(roi, str(id), (x, y - 15), cv.FONT_HERSHEY_PLAIN, 1, (0, 255, 0), 1)
         cv.rectangle(roi, (x, y), (x + w, y + h), (0, 255, 0), 3)
         #cv.putText(roi, str(id), (500, 600), cv.FONT_HERSHEY_PLAIN, 1, (0, 0, 255), 1)
 
-        #ot.check_lines()
         ot.dist_to_line(0)  # links
         ot.dist_to_line(1)  # unten
         ot.dist_to_line(2)  # rechts
         ot.dist_to_line(3)  # oben
         print("")
     print(ot.car_in_out)
-        #print(id, ot.dist_to_line())
-    data_plot.plotData(ot.car_in_out, cap)
+
+    #data_plot.plotData(ot.car_in_out, cap)
 
 
     cv.line(frame, (ot.crossing_lines[0][0], ot.crossing_lines[0][1]), (ot.crossing_lines[0][2], ot.crossing_lines[0][3]), (0, 0, 255), 2)  # links
@@ -78,7 +74,7 @@ while True:
     cv.line(frame, (ot.crossing_lines[2][0], ot.crossing_lines[2][1]), (ot.crossing_lines[2][2], ot.crossing_lines[2][3]), (0, 0, 255), 2)  # rechts
     cv.line(frame, (ot.crossing_lines[3][0], ot.crossing_lines[3][1]), (ot.crossing_lines[3][2], ot.crossing_lines[3][3]), (0, 0, 255), 2)  # oben
 
-    #cv.imshow('Mask', mask)
+    cv.imshow('Mask', mask)
     #cv.imshow('Mask 2', e_img)
     cv.imshow('Frame', frame)
 
