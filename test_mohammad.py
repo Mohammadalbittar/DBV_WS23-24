@@ -10,15 +10,14 @@ def roadExtract(video_path):
     cap2 = cv2.VideoCapture(video_path)
 
 
-    # Variable zum Festlegen des ersten Frame
-    first_frame = 100
+
 
     # Variablen zum Justieren des Ergebnisses
-    frameDistance_var, iteration_var, threshold_var = 50, 10, 30
+    frameDistance_var, iteration_var, threshold_var, first_frame_var = 20, 20, 30, 1500
 
     # Festlegen des ersten Frame
-    cap1.set(cv2.CAP_PROP_POS_FRAMES, first_frame)
-    cap2.set(cv2.CAP_PROP_POS_FRAMES, first_frame + frameDistance_var)
+    cap1.set(cv2.CAP_PROP_POS_FRAMES, first_frame_var)
+    cap2.set(cv2.CAP_PROP_POS_FRAMES, first_frame_var + frameDistance_var)
 
     # Array zum Abspreichern von den Ergebnissen der Subtraktion
     cumulative_result = []
