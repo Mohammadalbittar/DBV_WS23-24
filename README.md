@@ -125,6 +125,14 @@ Um den Rechenaufwand zu reduzieren, wird der gesamte Bildausschnitt auf eine „
 
 ## 4. Evaluation
 
+Das Erfassen der Fahrzeuge mithilfe von OpenCV funktioniert unter der Annahme, dass die Objekte von der Maske fehlerfrei erkannt werden. Es wurden zwei Methoden für das Erstellen der Maske verwendet. Mit beiden Masken können die Objekte hinreichend erkannt werden, sodass einzelne, einfache Fahrzeuge fehlerfrei erkannt werden (siehe Abbildung A). Letztendlich wurde sich aber für die Methode entschieden, bei der weniger Fahrzeuge falsch erkannt wurden. Unter Zuhilfenahme der Funktion point_inside_polygon() können Fehlerkennungen, die bei komplexeren Fahrzeugen auftreten (siehe Abbildung B) eliminiert werden. Probleme treten vor allem bei der Erkennung von Fahrzeugen, die durch andere Fahrzeuge verdeckt werden, auf (siehe Abbildung C). ![Evaluation_Noah](resources/Evaluation_Noah)
+Die Wegverfolgung der Fahrzeuge mit der Funktion dist_to_line() funktioniert unter der Annahme, dass die Fahrzeuge fehlerfrei erkannt werden. Dies ist in den meisten Fällen aber nur bei einzelnen, unverdeckten Fahrzeugen der Fall. Wenn dem Fahrzeug einmal eine neue ID aufgrund des Objektverlusts durch Fehler in der Maske zugewiesen wurde, wird die zweite Linienüberquerung, also die Ausfahrt, als erste Überquerung erkannt. Vermeiden lässt sich dies nur, indem das Fahrzeug über den gesamten Verlauf erkannt wird.
+Dem zuvor beschrieben Objektverlust wirkt die Funktion point_inside_polygon() wie bereits beschrieben entgegen. Allerdings kann diese auch dazu führen, dass ein innerhalb der Kreuzung verdecktes Fahrzeug anschließend nicht mehr neu erkannt wird oder zwei erst in der Kreuzung neu erkannte Fahrzeuge dieselbe ID erhalten (siehe 2Autos_1ID). ![2Autos_1ID](resources/2Autos_1ID)
+
+
+(Insgesamt kann die Objekterkennung mit OpenCV unter der Voraussetzung eindeutig erkannter Objekte den Verkehrsfluss der Kreuzung besser als die Objekterkennung mit YOLO)
+
+
 -  Getestet wurden mehrere Videos die über Youtube-Links oder als MP4 an das Programm übergeben wurden
    -  <u>Beispiellinks:</u>
       -  https://www.youtube.com/watch?v=2X27I6BAJcI
