@@ -26,7 +26,6 @@ def anzahlFahrzeugeProRichtung(input_array):
         
     # Zusammenstellen der Gesamtanzahl pro Richtung (Einfahrt und Ausfahrt) in eine Liste
     GesamtAnzahlProRichtung = [[Richtung1_ein, Richtung2_ein, Richtung3_ein, Richtung4_ein], [Richtung1_aus, Richtung2_aus, Richtung3_aus, Richtung4_aus]]
-    print('counted Lanes: ', GesamtAnzahlProRichtung)
 
     # Erstellen und Anzeigen des Balkendiagramms
     labels = ['Richtung 1', 'Richtung 2', 'Richtung 3', 'Richtung 4']  # Beschriftungen für die X-Achse
@@ -47,9 +46,10 @@ def anzahlFahrzeugeProRichtung(input_array):
     plt.show()  # Anzeigen des Diagramms
 
 
-def anzahlFahrzeugeProMinute(videodauer_in_min, CV_gesamt_erkannte_fahrzeuge, YOLO_gesamt_erkannte_fahrzeuge):
+def anzahlFahrzeugeProMinute(videodauer_in_sec, CV_gesamt_erkannte_fahrzeuge, YOLO_gesamt_erkannte_fahrzeuge):
     # Labels für das Balkendiagramm
     labels = ['OpenCV', 'YOLO']
+    videodauer_in_min = videodauer_in_sec * 60
 
     # Daten für das Balkendiagramm (Anzahl der erkannten Fahrzeuge pro Minute)
     erkannte_fahrzeuge_pro_minute = [CV_gesamt_erkannte_fahrzeuge / videodauer_in_min, YOLO_gesamt_erkannte_fahrzeuge / videodauer_in_min]

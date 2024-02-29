@@ -5,8 +5,6 @@ import numpy as np
 def motion_extraction(frame1, frame2):              # eine Funktion von Jan
     frame2 = cv2.cvtColor(frame2, cv2.COLOR_BGR2GRAY)
     frame1 = cv2.cvtColor(frame1, cv2.COLOR_BGR2GRAY)
-    # frame1 = cv2.GaussianBlur(frame1, (11, 11), 15)
-    # frame2 = cv2.GaussianBlur(frame1, (3, 3), 1)
     result = cv2.addWeighted(frame1,    0.5, cv2.bitwise_not(frame2), 0.5, 0)
     result = result.astype(np.float32) / 255
     result = abs(result - 0.5)
@@ -18,8 +16,8 @@ def process_video(video_path):
     cap1 = cv2.VideoCapture(video_path)
     cap2 = cv2.VideoCapture(video_path)
 
-    cap1.set(cv2.CAP_PROP_POS_FRAMES, 400)
-    cap2.set(cv2.CAP_PROP_POS_FRAMES, 405)
+    cap1.set(cv2.CAP_PROP_POS_FRAMES, 1700)
+    cap2.set(cv2.CAP_PROP_POS_FRAMES, 1705)
 
     one_time = True
     total_frames = int(cap1.get(cv2.CAP_PROP_FRAME_COUNT))
@@ -33,16 +31,9 @@ def process_video(video_path):
             print("Error: Empty frame(s) encountered.")
             break
 
-        # main_capture = cv2.cvtColor(main_capture, cv2.COLOR_BGR2GRAY)
-
         if one_time:
             cumulative_result = np.zeros_like(main_capture[:, :, 0], dtype=np.float32)
             _, frame_one = cap1.read()
-            
-            # cumulative_result = np.zeros_like(main_capture, dtype=np.float32)
-            # motion = motion_extraction(cv2.GaussianBlur(frame_one, (5, 5), sigmaX=4, sigmaY=5))
-            # motion = motion_extraction(frame_one)
-            
             one_time = False
         
 
