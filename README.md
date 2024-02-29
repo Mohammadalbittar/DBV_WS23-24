@@ -1,17 +1,12 @@
-# DBV Projekt
-Dies ist das Template Projekt für die Abschlussprojekte im Modul Digitale Bildverarbeitung an der TU Braunschweig.
-
-Löschen Sie als erstes diesen Abschnitt (DBV Projekt) in dieser Datei und füllen Sie den Rest entsprechend aus für die Abgabe. 
-
-# Projektname
-Fügen Sie ihren Projektnamen hinzu.
+# Analyse einer Kreuzung - Vergleich von Machine Learning zu Nicht-Machine-Learning Methoden
 
 # Teammitglieder
 Listen Sie hier noch einmal alle Teammitglieder mit Namen auf.
 
-- Armin Anfang
-- Berta Beliebig
-- Carola Coautor
+- Mohammad Albittar
+- Noah Kasten
+- Mostafa .. Nachname Ergänzen
+- Jan Sbiegay
 
 # Projektbeschreibung
 Laut §9 der Prüfungsordnung ist die Prüfungsform die "Erstellung und Dokumentation von Rechnerprogrammen"
@@ -46,17 +41,60 @@ Dieser Abschnitt soll eine Art Überblick über den Rest der Arbeit bieten.
 * Was für nennenswerte Ergebnisse haben Sie erzielt? Bspw. 43% schneller, robuster als andere, etc.
 * Überblick über ihr weiteres Vorgehen, welches unten beschrieben wird. (3-5 Sätze)
 
-Mit diesem Projekt soll das Tracken vom Fahrzeugen in einer Kreuzung für die weitere Analyse der Straßensituation ermöglicht werden. Dazu werden einerseits Techniken mit traditionellen Verfahren der OpenCV-Bibliothek mit der Machine-Learning Methode YOLOv5 verglichen. Dadurch soll herausgefunden werden, wie sich beide Ansätze möglicherweise gewinnbringend Ergänzen könnten. (wissenschaftlicher mehrwert).
+Mit diesem Projekt soll das Tracken vom Fahrzeugen in einer Kreuzung für die weitere Analyse der Straßensituation ermöglicht werden. Dazu werden einerseits Techniken mit traditionellen Verfahren der OpenCV-Bibliothek mit der Machine-Learning Methode YOLO verglichen. Dadurch soll herausgefunden werden, wie sich die Ergebnisse beider Ansätze unterscheiden und anschließed diskutiert werden, ob und wie sich diese gewinnbringend ergänzen können. (wissenschaftlicher mehrwert).
 Für die Analyse der Kreuzung soll der Straßenverlauf erkannt werden, um die Verläufe des Verkehrsflusses anhand der gefahrenen Wege festzustellen. Dazu sollen an jeder Ein- bzw. Ausfahrt der Kreuzung automatisch Linien erkannt werden. Über die Mittelpunkte der getracktet Fahrzeuge können dann Abstände zu diesen Linien berechnet werden, die für das Zählen der Überquerten Linien verwendet werden. Mit diesen Daten kann anschließend der Verkehrsfluss, die Verkehrsdichte und die mittlere Geschwindigkeit in der Kreuzung erfasst werden.
 (test)
 (ergebnisse)
+
 ## 2. Theoretische Grundlagen und Methoden mit entsprechender Literaturangabe
+- https://www.sciencedirect.com/science/article/pii/S0031320300000145#FIG3
+- https://www.sciencedirect.com/science/article/pii/S0167865502001940?ref=pdf_download&fr=RR-2&rr=85d0c9f509504510#FIG1
+- https://docs.ultralytics.com/
+- Motion Extraction (https://www.youtube.com/watch?v=NSS6yAMZF78)
+
+Klassische Ansätze versuchen bewegte Objekte über verschiedene Methoden zu Segmentieren und zu erkennen. Ausgehend von dieser Idee, versuchen wir bewegte Objekte von einem unbewegten Hintergrund zu trennen. 
+
 
 * Worauf bauen Sie auf?
 * Welche Literatur ist für Ihre Arbeit relevant? Dazu zählt nicht nur welche Sie verwendet haben, sondern auch, welche Arbeiten ähnliche Ziele wie Sie angehen.
 * Worin unterscheiden sich diese von Ihrer Arbeit?
 
 ## 3. Formulierung des Vorgehens / Algorithmen
+
+
+* <u>Ziele:</u> Bei jedem Ziel werden klassische Lösungsmöglichkeiten mit Machine Learining Lösungen verglichen
+   * Fahrzeuge je Minute erkennen: 
+      * Implementierung eines Algorithmus, der erkennt wieviele Fahrzeuge die Minute über die Kreuzung fahren
+
+   * Verkehrsfluss Heatmap: 
+      * Visualisierung des Verkehrsflusses der Kreuzung um eventuelle Muster und Intensitäten zu identifizieren
+
+   * Mittlere Geschwindigkeit: 
+      * Berechnung der mittleren Geschwindgkeit der erkannten Objekte
+* Zunächst wurden mehrere Methoden für die Segmentierung untersucht, um die Objekte von dem Hintergrund zu trennen und eine Objekt-/ oder Hintergrundmaske zu erhalten
+   
+   * ERGEBNISSE VON JEDEM MIT DEN JEWEILIGEN FUNKTIONEN
+
+      * Ergebniss
+      * Motivation
+      * Bewertung Ergebnis
+   
+   * Mohammad
+   * Noah
+   * Mostafa
+   * Jan
+   
+* Anschließend wurden die Ansätze mit den visuell besten Ergebnissen ausgewählt und zu dem folgenden Hauptprogramm zusammengefügt: 
+   
+   * Ergebnisbild Hauptprogramm
+   * Begründung für die Auswahl der Ergebnisse
+   * Verlauf von Frame-Input zu Ergebnis-Output
+   
+
+
+
+
+
 
 * Beschreiben Sie erneut knapp das Ziel ihres Projekts (1-3 Sätze)
 * Geben Sie zunächst einen Überblick über Ihr Programm, gerne auch mit entsprechender Visualisierung. Sie können Bilder zur besseren Erläuterung wie folgt einfügen: ![Mein Bild](resources/tiger.jpg) (3-5 Sätze)

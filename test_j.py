@@ -2,6 +2,8 @@ from project.opencv_instance import *
 from project.functions_j import *
 import cv2 as cv
 
+
+
 path = "video/traffic.mp4"
 url = 'https://www.youtube.com/watch?v=2X27I6BAJcI'
 def main():
