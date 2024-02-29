@@ -39,7 +39,7 @@ def main():
         frame4, _ = gmg(frame)
         frame5 = motion(frame)
         # frame6 = watershed_segmentation(frame3)
-        _,frame7 = lukas(frame2)
+        _,frame7, _, _ = lukas(frame2)
 
         #frame1 = add_text_to_frame(frame1, 'MOG')
         frame2 = add_text_to_frame(frame2, 'KNN')
