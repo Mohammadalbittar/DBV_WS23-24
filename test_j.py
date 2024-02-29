@@ -10,7 +10,7 @@ def main():
     #lukas_kanade(path)
     #backround_sub(path, mog2=True)
 
-    classic = True
+    classic = False
 
     cap = get_livestream(url)
     width = int(cap.get(cv.CAP_PROP_FRAME_WIDTH))
@@ -31,7 +31,7 @@ def main():
     yolo_tracker = yolo_track()
 
     k = 0
-    while k<5:
+    while True:
         ret, frame = cap.read()
         if not ret:
             print('Stream loading error')
@@ -40,14 +40,14 @@ def main():
         print(f'Frame {k}/{length}')
 
         if classic==True:
-            #frame1,_ = mog(frame)
+            frame1,_ = mog(frame)
             #frame2, _ = knn(frame)
             #frame3, _ = cnt(frame)
             #frame4, _ = gmg(frame)
-            frame5 = motion(frame)
+            #frame5 = motion(frame)
             #frame6 = watershed_segmentation(frame1)
-            #_,_,frame7, _ = lukas(frame)
-            frame9 = hdbscan_clustering(frame5)
+            #_,frame7,_, _ = lukas(frame)
+            #frame9 = hdbscan_clustering(frame5)
 
             #frame1 = add_text_to_frame(frame1, 'MOG')
             #frame2 = add_text_to_frame(frame2, 'KNN')
@@ -55,7 +55,7 @@ def main():
             #frame4 = add_text_to_frame(frame4, 'GMG')
             #frame5 = add_text_to_frame(frame5, 'Motion')
             #frame6 = add_text_to_frame(frame6, 'watershed')
-            # frame7 = add_text_to_frame(frame7, 'Lukas Kanade')
+            #frame7 = add_text_to_frame(frame7, 'Lukas Kanade')
 
         else:
             frame, ins, out = yolo_region(frame)
@@ -73,12 +73,12 @@ def main():
         #frame = stitch_frames(frame2, frame7, frame5, frame3)
 
         # Zeigen der Ergebnisse
-        cv.imshow('Live_Output', frame9)
+        cv.imshow('Live_Output', frame)
         if cv.waitKey(1) & 0xFF == ord('q'):
             break
 
-        str = "HDBScan"
-        cv.imwrite(f'resources/{str}.png', frame9)
+        str = "Yolo22"
+        cv.imwrite(f'resources/{str}.png', frame)
         k +=1
 
 
