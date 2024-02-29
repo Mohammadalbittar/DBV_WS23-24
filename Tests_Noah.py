@@ -2,16 +2,17 @@ import math
 
 import cv2 as cv
 import numpy as np
+import time
 import project.functions_n as fn
 #import project.functions_j as fj
 import project.data_plot as data_plot
 
 ### TEST ###
 #Initialisierung
-path = r'C:\Noah\Studium Lokal\Master\DBV_Abschlussprojekt\TestVideo1.mp4'  # Videopfad
+path = 'resources/video2.mp4'  # Videopfad
 ot = fn.Objecttracking()    # ot als Objekt der Klasse Objecttracking definiert
 object_detector = cv.createBackgroundSubtractorMOG2(history=60, varThreshold=70)
-change_roi = False
+change_roi = True
 
 #KERNALS
 kernalOp = np.ones((3,3),np.uint8)
@@ -31,11 +32,12 @@ if change_roi:  # Wenn True, kann die roi mit der Funktion ot.set_roi angepasst 
 #gmg = fj.background_sub(methode='gmg')
 
 cap = cv.VideoCapture(path)
+start_time = time.time()    # Startzeit des Videos
 
 while True:
     ret, frame = cap.read()
     roi = frame[ot.roi[1]:ot.roi[3], ot.roi[0]: ot.roi[2]] # y1, y2 : x1, x2
-    #cv.imshow('Region of Interest', roi)
+    cv.imshow('Region of Interest', roi)
 
     # Masking methode 1
     mask = object_detector.apply(roi)
@@ -52,8 +54,8 @@ while True:
     #cv.imshow('frame1', frame2)
     cv.imshow('maske', e_img)
 
-    contours, _ = cv.findContours(e_img, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)   #mask1
-    #contours, _ = cv.findContours(e_img, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE) #mask2
+    #contours, _ = cv.findContours(mask, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)   #mask1
+    contours, _ = cv.findContours(e_img, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE) #mask2
     bounding_boxes = []
 
     for cnt in contours:
@@ -88,13 +90,15 @@ while True:
     cv.line(frame, (ot.crossing_lines[2][0], ot.crossing_lines[2][1]), (ot.crossing_lines[2][2], ot.crossing_lines[2][3]), (0, 0, 255), 2)  # rechts
     cv.line(frame, (ot.crossing_lines[3][0], ot.crossing_lines[3][1]), (ot.crossing_lines[3][2], ot.crossing_lines[3][3]), (0, 0, 255), 2)  # oben
 
-    #cv.imshow('Mask', mask)
-    #cv.imshow('Mask 2', e_img)
+    cv.imshow('Mask', mask)
+    cv.imshow('Mask 2', e_img)
     cv.imshow('Frame', frame)
 
     key = cv.waitKey(30)
     if key == 27:
         break
 
+end_time = time.time()  # Endzeit des Videos
+elapsed_time = end_time - start_time    # Dauer, die das Video abgespielt wurde
 cap.release()
 cv.destroyAllWindows()

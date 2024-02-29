@@ -23,7 +23,7 @@ def main():
     height = int(cap.get(cv.CAP_PROP_FRAME_HEIGHT))
     length = int(cap.get(cv.CAP_PROP_FRAME_COUNT))
     _, frame_one = cap.read()
-
+    '''
     while True:
         run, frame = cap.read()
         if not run:
@@ -40,7 +40,7 @@ def main():
     end_time = time.time()  # Endzeit des Videos
     elapsed_time_analyse = end_time - start_time  # Dauer, die das Video abgespielt wurde
     cap.release()
-
+    '''
 
 
 
@@ -57,7 +57,7 @@ def main():
 )
 
     ######## Anwendungsteil ########
-    cap = cv.VideoCapture(path)
+    #cap = cv.VideoCapture(path)
     start_time = time.time()  # Startzeit des Videos
     width = int(cap.get(cv.CAP_PROP_FRAME_WIDTH))
     height = int(cap.get(cv.CAP_PROP_FRAME_HEIGHT))
