@@ -2,6 +2,9 @@ import cv2 as cv
 import pafy
 import pytube
 from pytube import YouTube
+from ultralytics import YOLO
+from ultralytics.solutions import object_counter
+from collections import defaultdict
 
 import sys
 import numpy as np
@@ -91,7 +94,7 @@ def dense_optical_flow_outer(initial_frame):
 
 
 
-def background_sub(methode: Union['mog', 'knn', 'cnt', 'gmg' ]):
+def background_sub(methode: Union['mog', 'knn', 'cnt', 'gmg']):
     if methode == 'mog':
         backSub = cv.createBackgroundSubtractorMOG2(history=0, varThreshold=50, detectShadows=False)
         print('MOG 2 Selected')
@@ -246,3 +249,56 @@ def watershed_segmentation(image):
     markers = markers.astype(np.uint8)
     markers = (markers + 1) * (255 // 2)
     return markers
+
+
+def yolo_region_count(region_points=  [(700, 800), (1900, 700), (1600, 500), (600, 550)]):
+    # [ unten links , unten rechts, oben rechts, oben links]
+    # Nested function for YOLO and Object Counter, with region points as input parameter
+    model = YOLO("yolov8n.pt")
+    counter = object_counter.ObjectCounter()
+    counter.set_args(view_img=True, reg_pts=region_points, classes_names=model.names, draw_tracks=True)
+    def yolo_region_count2(frame):
+        tracks = model.track(frame, persist=True, show=False)
+        result = counter.start_counting(frame, tracks)
+        return result
+    return yolo_region_count2
+
+def yolo_predict():
+    model = YOLO("yolov8n.pt").to('mps')
+    # {0: 'person',
+    #  1: 'bicycle',
+    #  2: 'car',
+    #  3: 'motorcycle',
+    #  4: 'airplane',
+    #  5: 'bus',
+    #  6: 'train',
+    #  7: 'truck',
+    #  8: 'boat',
+    #  9: 'traffic light', .... }
+    classes = [2,3,5,7]
+    def yolo_predict2(frame):
+        results = model.predict(frame, stream_buffer = True, classes = classes)
+        results = results[0].plot(conf = False, labels = False)
+        return results
+    return yolo_predict2
+
+def yolo_track():
+    model = YOLO("yolov8n.pt")
+    track_history = defaultdict(lambda: [])
+    def yolo_track2(frame):
+        result = model.track(frame, persist=True, show=True, show_boxes= False)
+        box  = result[0].boxes.xywh.cpu()
+        id = result[0].boxes.id.int().cpu().tolist()
+        for box, track_id in zip(box, id):
+            x, y, w, h = box
+            track = track_history[track_id]
+            track.append((float(x), float(y)))
+            if len(track) > 30:
+                track.pop(0)
+
+            # Draw the tracking lines
+            points = np.hstack(track).astype(np.int32).reshape((-1, 1, 2))
+            cv.polylines(frame, [points], isClosed=False, color=(0, 255, 0), thickness=2)
+
+        return frame
+    return yolo_track2
