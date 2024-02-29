@@ -178,6 +178,8 @@ Bei starker Ungleicheit der Features behalten wir uns eine individuelle Notenver
 
 Bspw.
 
-- Systemarchitektur (Mohammad 0.0341 %, Berta 80%, Armin 20%)
-- GUI (Carola 100%)
+- Systemarchitektur (Mohammad 0.0341 %)
+- Main-Funktion (Noah 25%, )
+- Objekterkennung mit OpenCV (Noah 100%)
+- Fahrzeugweg tracken mit OpenCV (Noah 100 %)
 - ...
