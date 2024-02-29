@@ -15,8 +15,8 @@ def process_video(video_path):
     cap1 = cv2.VideoCapture(video_path)          # Video-Capture-Objekt für das Hauptvideo erstellen
     cap2 = cv2.VideoCapture(video_path)          # Video-Capture-Objekt für das sekundäre Video erstellen
 
-    cap1.set(cv2.CAP_PROP_POS_FRAMES, 1900)          # Position des Hauptvideos festlegen
-    cap2.set(cv2.CAP_PROP_POS_FRAMES, 1950)          # Position des sekundären Videos festlegen
+    cap1.set(cv2.CAP_PROP_POS_FRAMES, 1800)          # Position des Hauptvideos festlegen
+    cap2.set(cv2.CAP_PROP_POS_FRAMES, 1850)          # Position des sekundären Videos festlegen
 
     one_time = True          # einmalige Ausführung
     total_frames = int(cap1.get(cv2.CAP_PROP_FRAME_COUNT))          # Gesamtzahl der Frames im Video erhalten
