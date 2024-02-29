@@ -13,11 +13,37 @@ def main():
     ######## Initialisierung ########
     path = r'resources/video2.mp4'  # Videopfad
 
-    # cap = get_livestream(url)
-    # width = int(cap.get(cv.CAP_PROP_FRAME_WIDTH))
-    # height = int(cap.get(cv.CAP_PROP_FRAME_HEIGHT))
-    # length  = int(cap.get(cv.CAP_PROP_FRAME_COUNT))
-    # _, frame_one = cap.read()
+
+
+
+    ######## Initial Analysis ########
+    cap = cv.VideoCapture(path)
+    start_time = time.time()  # Startzeit des Videos
+    width = int(cap.get(cv.CAP_PROP_FRAME_WIDTH))
+    height = int(cap.get(cv.CAP_PROP_FRAME_HEIGHT))
+    length = int(cap.get(cv.CAP_PROP_FRAME_COUNT))
+    _, frame_one = cap.read()
+
+    while True:
+        run, frame = cap.read()
+        if not run:
+            print('Initial Analysis finished or Video Error')
+            break
+        ## Hier die FUnktion für die Initiale analyse
+
+
+
+
+        ##
+
+
+    end_time = time.time()  # Endzeit des Videos
+    elapsed_time_analyse = end_time - start_time  # Dauer, die das Video abgespielt wurde
+    cap.release()
+
+
+
+
 
     ot = Objecttracking()    # ot als Objekt der Klasse Objecttracking definiert
 
