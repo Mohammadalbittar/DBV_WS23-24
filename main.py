@@ -11,7 +11,7 @@ def main():
     url = 'https://www.youtube.com/watch?v=2X27I6BAJcI'  # URL für Testvideo
 
     ######## Initialisierung ########
-    #path = r'C:\Noah\Studium Lokal\Master\DBV_Abschlussprojekt\TestVideo1.mp4'  # Videopfad
+    path = r'C:\Noah\Studium Lokal\Master\DBV_Abschlussprojekt\TestVideo1.mp4'  # Videopfad
 
     cap = get_livestream(url)
     width = int(cap.get(cv.CAP_PROP_FRAME_WIDTH))
@@ -30,7 +30,8 @@ def main():
 
 
     ######## Anwendungsteil ########
-    #cap = cv.VideoCapture(path)
+    cap = cv.VideoCapture(path)
+    start_time = time.time()  # Startzeit des Videos
 
     while True:
         ret, frame = cap.read() # Frame einlesen
@@ -82,6 +83,9 @@ def main():
         key = cv.waitKey(30)
         if key == 27:   # Durch Drücken der ESC-Taste wird das Programm geschlossen
             break
+
+    end_time = time.time()  # Endzeit des Videos
+    elapsed_time = end_time - start_time  # Dauer, die das Video abgespielt wurde
 
     cap.release()
     cv.destroyAllWindows()
