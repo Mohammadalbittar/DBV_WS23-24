@@ -131,8 +131,11 @@ def motion_extraction(first_frame):
         frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
         frame = cv.GaussianBlur(frame, (11, 11), 15)
         if first_frame is not None:
-            result = cv.addWeighted(first_frame, 0.5, cv.bitwise_not(frame), 0.5, 0)
-            #result = abs(result - (255//2))
+            result = cv.addWeighted(first_frame,    0.5, cv.bitwise_not(frame), 0.5, 0)
+            result = result.astype(np.float32) / 255
+            result = abs(result - 0.5)
+            _, result = cv.threshold(result, 0.05, 1, cv.THRESH_BINARY)
+            result = cv.dilate(result, None, iterations=5)
             first_frame = frame
             return result
         else: print('No motion detected')

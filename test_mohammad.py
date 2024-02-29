@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 from collections import Counter
+from project.functions_j import motion_extraction
 
 
 # Funktion zum Erzeugen von befahrender Strecke

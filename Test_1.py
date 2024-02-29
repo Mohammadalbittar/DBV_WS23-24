@@ -35,7 +35,7 @@ def process_video(video_path):
 
         cv2.imshow('Input Video', main_capture)
         cv2.imshow('Cumulative Difference', cumulative_result.astype(np.uint8))
-        if cv2.waitKey(1) & 0xFF == ord('q'):
+        if cv2.waitKey(1) == ord('q'):
             break
 
     cap1.release()
