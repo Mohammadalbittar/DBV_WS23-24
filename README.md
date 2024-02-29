@@ -72,7 +72,7 @@ Klassische Ansätze versuchen bewegte Objekte über verschiedene Methoden zu Seg
    * Mittlere Geschwindigkeit: 
       * Berechnung der mittleren Geschwindgkeit der erkannten Objekte
 * Zunächst wurden mehrere Methoden für die Segmentierung untersucht, um die Objekte von dem Hintergrund zu trennen und eine Objekt-/ oder Hintergrundmaske zu erhalten
-   
+  
    * ERGEBNISSE VON JEDEM MIT DEN JEWEILIGEN FUNKTIONEN
 
       * Ergebniss
@@ -86,7 +86,7 @@ Klassische Ansätze versuchen bewegte Objekte über verschiedene Methoden zu Seg
    * Jan
    
 * Anschließend wurden die Ansätze mit den visuell besten Ergebnissen ausgewählt und zu dem folgenden Hauptprogramm zusammengefügt: 
-   
+  
    * Ergebnisbild Hauptprogramm
    * Begründung für die Auswahl der Ergebnisse
    * Verlauf von Frame-Input zu Ergebnis-Output
