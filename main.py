@@ -31,6 +31,7 @@ def main():
 
     ######## Anwendungsteil ########
     cap = cv.VideoCapture(path)
+    start_time = time.time()  # Startzeit des Videos
 
     while True:
         ret, frame = cap.read() # Frame einlesen
@@ -82,6 +83,9 @@ def main():
         key = cv.waitKey(30)
         if key == 27:   # Durch Drücken der ESC-Taste wird das Programm geschlossen
             break
+
+    end_time = time.time()  # Endzeit des Videos
+    elapsed_time = end_time - start_time  # Dauer, die das Video abgespielt wurde
 
     cap.release()
     cv.destroyAllWindows()
