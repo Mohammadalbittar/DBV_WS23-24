@@ -134,8 +134,11 @@ def motion_extraction(first_frame):
         frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
         frame = cv.GaussianBlur(frame, (11, 11), 15)
         if first_frame is not None:
-            result = cv.addWeighted(first_frame, 0.5, cv.bitwise_not(frame), 0.5, 0)
-            #result = abs(result - (255//2))
+            result = cv.addWeighted(first_frame,    0.5, cv.bitwise_not(frame), 0.5, 0)
+            result = result.astype(np.float32) / 255
+            result = abs(result - 0.5)
+            _, result = cv.threshold(result, 0.05, 1, cv.THRESH_BINARY)
+            result = cv.dilate(result, None, iterations=5)
             first_frame = frame
             return result
         else: print('No motion detected')
@@ -284,21 +287,19 @@ def yolo_predict():
 
 def yolo_track():
     model = YOLO("yolov8n.pt")
-    track_history = defaultdict(lambda: [])
+    classes = [2, 3, 5, 7]
     def yolo_track2(frame):
-        result = model.track(frame, persist=True, show=True, show_boxes= False)
-        box  = result[0].boxes.xywh.cpu()
-        id = result[0].boxes.id.int().cpu().tolist()
-        for box, track_id in zip(box, id):
-            x, y, w, h = box
-            track = track_history[track_id]
-            track.append((float(x), float(y)))
-            if len(track) > 30:
-                track.pop(0)
-
-            # Draw the tracking lines
-            points = np.hstack(track).astype(np.int32).reshape((-1, 1, 2))
-            cv.polylines(frame, [points], isClosed=False, color=(0, 255, 0), thickness=2)
-
-        return frame
+        results = model.predict(frame, classes = classes, stream_buffer = True)
+        boxes = results[0].boxes.xywh
+        frame = results[0].plot(conf = False, labels = False)
+        for box in boxes:
+            x,y,_, _ = box
+            x = int(x)
+            y = int(y)
+            frame = cv.circle(frame,(x,y), 10, (0,0,255), -1)
+        return frame , x , y
     return yolo_track2
+
+
+def box_middle(x,y,w,h):
+    return (int(x - w//2), int(y - h//2))

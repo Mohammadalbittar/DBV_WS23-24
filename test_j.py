@@ -8,7 +8,7 @@ def main():
     #lukas_kanade(path)
     #backround_sub(path, mog2=True)
 
-    classic = False
+    classic = True
 
     cap = get_livestream(url)
     width = int(cap.get(cv.CAP_PROP_FRAME_WIDTH))
@@ -42,9 +42,9 @@ def main():
             #frame2, _ = knn(frame)q
             #frame3, _ = cnt(frame)
             #frame4, _ = gmg(frame)
-            #frame5 = motion(frame)
+            frame5 = motion(frame)
             # frame6 = watershed_segmentation(frame3)
-            _,_,frame7, _ = lukas(frame)
+            #_,_,frame7, _ = lukas(frame)
 
             # frame1 = add_text_to_frame(frame1, 'MOG')
             # frame2 = add_text_to_frame(frame2, 'KNN')
@@ -56,8 +56,8 @@ def main():
 
         else:
             #frame = yolo_region(frame)
-            frame = yolo_pred(frame)
-            #frame = yolo_tracker(frame)
+            #frame = yolo_pred(frame)
+            frame, _, _ = yolo_tracker(frame)
 
         #frame = cv.dilate(frame8, None, iterations=2)
         #q_, frame = cv.threshold(frame, 0.9, 1, cv.THRESH_BINARY)
@@ -69,7 +69,7 @@ def main():
         #frame = stitch_frames(frame2, frame7, frame5, frame3)
 
         # Zeigen der Ergebnisse
-        cv.imshow('Live_Output', frame)
+        cv.imshow('Live_Output', frame5)
         if cv.waitKey(1) & 0xFF == ord('q'):
             break
         k +=1
