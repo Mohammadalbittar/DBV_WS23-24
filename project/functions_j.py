@@ -3,6 +3,7 @@ import pafy
 from pytube import YouTube
 from ultralytics import YOLO
 from ultralytics.solutions import object_counter
+import torch
 
 import sys
 import numpy as np
@@ -228,11 +229,7 @@ def motion_extraction(first_frame):
         frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
         frame = cv.GaussianBlur(frame, (11, 11), 15)
         if first_frame is not None:
-<<<<<<< HEAD
             result = cv.addWeighted(first_frame,    0.5, cv.bitwise_not(frame), 0.5, 0)
-=======
-            result = cv.addWeighted(first_frame, 0.5, cv.bitwise_not(frame), 0.5, 0)
->>>>>>> origin/main
             result = result.astype(np.float32) / 255
             result = abs(result - 0.5)
             _, result = cv.threshold(result, 0.05, 1, cv.THRESH_BINARY)
@@ -474,8 +471,18 @@ def yolo_region_count(region_points=  [(700, 800), (1900, 700), (1600, 500), (60
 
     Die Umsetzung dieser Funktion ist an verschiedenen Online Beispielen orientiert und notwenige Stellen wurden für unsere Umsetzung abgewandelt.
     """
+    # Check if CUDA (GPU support) is available
+    if torch.cuda.is_available():
+        device = torch.device('cuda')
+        print('Using GPU')
+    elif torch.backends.mps.is_available():
+        device = torch.device('mps')
+        print('Using mps')
+    else:
+        device = torch.device('cpu')
+        print("No GPU available. Running on CPU.")
     classes = [2,3,5,7]
-    model = YOLO("yolov8n.pt")
+    model = YOLO("yolov8n.pt").to(device)
     counter = object_counter.ObjectCounter()
     counter.set_args(view_img=False, reg_pts=region_points, classes_names=model.names, draw_tracks=True)
 
@@ -504,7 +511,19 @@ def yolo_predict():
     Returns:
     yolo_predict2: A function that takes a frame as input and returns the predicted results.
     """
-    model = YOLO("yolov8n.pt").to('mps')
+
+    # Check if CUDA (GPU support) is available
+    if torch.cuda.is_available():
+        device = torch.device('cuda')
+        print('Using GPU')
+    elif torch.backends.mps.is_available():
+        device = torch.device('mps')
+        print('Using mps')
+    else:
+        device = torch.device('cpu')
+        print("No GPU available. Running on CPU.")
+
+    model = YOLO("yolov8n.pt").to(device)
     # {0: 'person',
     #  1: 'bicycle',
     #  2: 'car',

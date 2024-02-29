@@ -1,6 +1,7 @@
 from project.GUI2 import *
 from project.functions_n import *
 from project.functions_j import *
+from project.Plotten import *
 
 
 
@@ -53,8 +54,7 @@ def main():
     kernal_Cl = np.ones((8,8),np.uint8)  # Schließung
     kernal_e = np.ones((4,4),np.uint8)  # Erodieren
 
-    yolo_regio = yolo_region_count([(460, 370), (520, 520), (1150, 460), (940, 345)]
-)
+    yolo_regio = yolo_region_count([(460, 370), (520, 520), (1150, 460), (940, 345)])
 
     ######## Anwendungsteil ########
     #cap = cv.VideoCapture(path)
@@ -134,6 +134,10 @@ def main():
 
     cap.release()
     cv.destroyAllWindows()
+
+    # Daten auswerten
+    anzahlFahrzeugeProRichtung(ot.car_in_out)
+    anzahlFahrzeugeProMinute(elapsed_time, len(ot.car_in_out), 0)
 
 # Main
 if __name__ == "__main__":
