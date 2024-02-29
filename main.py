@@ -11,7 +11,7 @@ def main():
     url = 'https://www.youtube.com/watch?v=2X27I6BAJcI'  # URL für Testvideo
 
     ######## Initialisierung ########
-    path = r'resources/test_video.mp4'  # Videopfad
+    path = r'resources/video2.mp4'  # Videopfad
 
     # cap = get_livestream(url)
     # width = int(cap.get(cv.CAP_PROP_FRAME_WIDTH))
@@ -27,7 +27,8 @@ def main():
     kernal_Cl = np.ones((8,8),np.uint8)  # Schließung
     kernal_e = np.ones((4,4),np.uint8)  # Erodieren
 
-    yolo_regio = yolo_region_count([(700, 800), (1900, 700), (1600, 500), (600, 550)])
+    yolo_regio = yolo_region_count([(460, 370), (520, 520), (1150, 460), (940, 345)]
+)
 
     ######## Anwendungsteil ########
     cap = cv.VideoCapture(path)
@@ -39,6 +40,7 @@ def main():
 
     while True:
         ret, frame = cap.read() # Frame einlesen
+        frame_y = frame.copy()
         roi = frame[ot.roi[1]:ot.roi[3], ot.roi[0]: ot.roi[2]] # Region_of_interest Format: y1, y2 : x1, x2
 
         #Erstellen der Maske
@@ -82,19 +84,21 @@ def main():
 
         ###### YOLO ######
 
-        frame_yolo, ins, out = yolo_regio(frame)
+        frame_yolo, ins, out = yolo_regio(frame_y)
 
 
 
 
 
         ##### Ausgabe von Bildern #####
-        video_tiling_mixed(frame, frame_yolo, width, height)
+        frame = video_tiling_mixed(frame, frame_yolo, width, height)
 
+        cv.imshow('Frame', frame)
         #cv.imshow('Maske', e_img)
         #cv.imshow('Region of Interest', roi)
         #cv.imshow('Frame', frame)
-
+        #cv.imshow('Frame YOLO', frame_yolo)
+        
         key = cv.waitKey(30)
         if key == 27:   # Durch Drücken der ESC-Taste wird das Programm geschlossen
             break

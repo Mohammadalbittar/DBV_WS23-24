@@ -345,10 +345,11 @@ def video_tiling_mixed(frame1, frame2, width, height):
     frame2 = cv.cvtColor(frame2, cv.COLOR_GRAY2BGR) if len(frame2.shape) == 2 else frame2
 
 
-    output_frame = np.zeros((height * 2, width * 2, 3), dtype=np.uint8)
+    output_frame = np.zeros((height, width*2, 3), dtype=np.uint8)
 
     output_frame[:height, :width, :3] = frame1
     output_frame[:height, width:, :3] = frame2
+
 
     return output_frame
 
