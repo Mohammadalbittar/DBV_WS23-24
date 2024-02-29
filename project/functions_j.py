@@ -1,17 +1,12 @@
 import cv2 as cv
 import pafy
-import pytube
 from pytube import YouTube
 from ultralytics import YOLO
 from ultralytics.solutions import object_counter
-from collections import defaultdict
 
 import sys
 import numpy as np
-import cv2 as cv
 from typing import Union
-from sklearn.cluster import DBSCAN
-from sklearn.preprocessing import StandardScaler
 import hdbscan
 
 
@@ -372,7 +367,8 @@ def add_text_to_frame(frame, text):
     cv.putText(result_frame, text, position, font, font_scale, color, thickness, cv.LINE_AA)
     return result_frame
 
-def hdbscan_clustering(image, min_cluster_size = 5, min_samples = 3):
+
+def hdbscan_clustering(image, min_cluster_size=5, min_samples=3):
     """
     Perform HDBSCAN clustering on an image.
 
@@ -386,22 +382,32 @@ def hdbscan_clustering(image, min_cluster_size = 5, min_samples = 3):
 
     Returns:
     - result: numpy.ndarray
-        The clustered image.
+        The input image with clusters overlayed.
     """
     print(f'Type: {type(image)} Shape: {image.shape} Dtype: {image.dtype}')
 
     if len(image.shape) > 2:
-        image = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
-        print('Image RGB to Gray in Funktion = hdbscan_clustering')
+        image_gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
+        print('Image RGB to Gray in Function = hdbscan_clustering')
+    else:
+        image_gray = image
 
-    hdbscan_clusterer = hdbscan.HDBSCAN(min_cluster_size = min_cluster_size, min_samples =min_samples)
+    hdbscan_clusterer = hdbscan.HDBSCAN(min_cluster_size=min_cluster_size, min_samples=min_samples)
 
-    image = image.reshape(-1, 1)
-    result = hdbscan_clusterer.fit_predict(image)
-    print(f'After FIT Type: {type(result)} Shape: {result.shape} Dtype: {result.dtype}')
-    result = result.reshape(image.shape)
-    print(f'After Reshape Type: {type(result)} Shape: {result.shape} Dtype: {result.dtype}')
-    result = (result * 255 / np.max(result)).astype(np.uint8)
+    image_flat = image_gray.reshape(-1, 1)
+    cluster_labels = hdbscan_clusterer.fit_predict(image_flat)
+    cluster_labels = cluster_labels.reshape(image_gray.shape)
+
+    # Create a mask where each cluster is assigned a unique color
+    cluster_mask = np.zeros_like(image)
+    unique_labels = np.unique(cluster_labels)
+    for label in unique_labels:
+        if label == -1:  # Noise points
+            continue
+        cluster_mask[cluster_labels == label] = np.random.randint(0, 255, 3)
+
+    # Overlay the cluster mask on the original image
+    result = cv.addWeighted(image, 0.7, cluster_mask, 0.3, 0)
 
     print(f'Type: {type(result)} Shape: {result.shape} Dtype: {result.dtype}')
     return result
