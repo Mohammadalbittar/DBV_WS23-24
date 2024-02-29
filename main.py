@@ -76,4 +76,4 @@ cv.destroyAllWindows()
 if __name__ == "__main__":
     #root = tk.Tk()
     #gui = GUI(root)
-    root.mainloop()
+    #root.mainloop()
