@@ -80,6 +80,7 @@ Klassische Ansätze versuchen bewegte Objekte über verschiedene Methoden zu Seg
       * Bewertung Ergebnis
    
    * Mohammad
+      
    * Noah
    * Mostafa
    * Jan
@@ -156,6 +157,6 @@ Bei starker Ungleicheit der Features behalten wir uns eine individuelle Notenver
 
 Bspw.
 
-- Systemarchitektur (Berta 80%, Armin 20%)
+- Systemarchitektur (Mohammad 0.0341 %, Berta 80%, Armin 20%)
 - GUI (Carola 100%)
 - ...
