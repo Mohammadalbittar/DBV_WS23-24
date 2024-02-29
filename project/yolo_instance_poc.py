@@ -18,10 +18,8 @@ out = cv.VideoWriter('../video/instance-segmentation-object-tracking.avi', cv.Vi
 
 # Init speed-estimation obj
 line_pts = [(0, 360), (1280, 360)]
-speed_obj = speed_estimation.SpeedEstimator()
-speed_obj.set_args(reg_pts=line_pts,
-                   names=names,
-                   view_img=True)
+#speed_obj = speed_estimation.SpeedEstimator()
+#speed_obj.set_args(reg_pts=line_pts, names=names, view_img=True)
 
 
 while True:
@@ -34,19 +32,19 @@ while True:
 
     results = model.track(im0, persist=True, device="mps")
 
-    im1 = speed_obj.estimate_speed(im0, results)
+    #im1 = speed_obj.estimate_speed(im0, results)
 
-    # if results[0].boxes.id is not None and results[0].masks is not None:
-    #     masks = results[0].masks.xy
-    #     track_ids = results[0].boxes.id.int().cpu().tolist()
-    #
-    #     for mask, track_id in zip(masks, track_ids):
-    #         annotator.seg_bbox(mask=mask,
-    #                            mask_color=colors(track_id, True),
-    #                            track_label=str(track_id))
+    if results[0].boxes.id is not None and results[0].masks is not None:
+        masks = results[0].masks.xy
+        track_ids = results[0].boxes.id.int().cpu().tolist()
+
+        for mask, track_id in zip(masks, track_ids):
+            annotator.seg_bbox(mask=mask,
+                               mask_color=colors(track_id, True),
+                               track_label=str(track_id))
 
     #out.write(im0)
-    cv.imshow("instance-segmentation-object-tracking", im1)
+    cv.imshow("instance-segmentation-object-tracking", im0)
 
     if cv.waitKey(1) & 0xFF == ord('q'):
         break
