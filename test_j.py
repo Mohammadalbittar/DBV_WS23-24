@@ -8,7 +8,7 @@ def main():
     #lukas_kanade(path)
     #backround_sub(path, mog2=True)
 
-    classic = True
+    classic = False
 
     cap = get_livestream(url)
     width = int(cap.get(cv.CAP_PROP_FRAME_WIDTH))
@@ -69,7 +69,7 @@ def main():
         #frame = stitch_frames(frame2, frame7, frame5, frame3)
 
         # Zeigen der Ergebnisse
-        cv.imshow('Live_Output', frame5)
+        cv.imshow('Live_Output', frame)
         if cv.waitKey(1) & 0xFF == ord('q'):
             break
         k +=1
