@@ -2,6 +2,9 @@ import cv2 as cv
 import pafy
 import pytube
 from pytube import YouTube
+from ultralytics import YOLO
+from ultralytics.solutions import object_counter
+from collections import defaultdict
 
 import sys
 import numpy as np
@@ -91,7 +94,7 @@ def dense_optical_flow_outer(initial_frame):
 
 
 
-def background_sub(methode: Union['mog', 'knn', 'cnt', 'gmg' ]):
+def background_sub(methode: Union['mog', 'knn', 'cnt', 'gmg']):
     if methode == 'mog':
         backSub = cv.createBackgroundSubtractorMOG2(history=0, varThreshold=50, detectShadows=False)
         print('MOG 2 Selected')
@@ -131,8 +134,11 @@ def motion_extraction(first_frame):
         frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
         frame = cv.GaussianBlur(frame, (11, 11), 15)
         if first_frame is not None:
-            result = cv.addWeighted(first_frame, 0.5, cv.bitwise_not(frame), 0.5, 0)
-            #result = abs(result - (255//2))
+            result = cv.addWeighted(first_frame,    0.5, cv.bitwise_not(frame), 0.5, 0)
+            result = result.astype(np.float32) / 255
+            result = abs(result - 0.5)
+            _, result = cv.threshold(result, 0.05, 1, cv.THRESH_BINARY)
+            result = cv.dilate(result, None, iterations=5)
             first_frame = frame
             return result
         else: print('No motion detected')
@@ -246,3 +252,54 @@ def watershed_segmentation(image):
     markers = markers.astype(np.uint8)
     markers = (markers + 1) * (255 // 2)
     return markers
+
+
+def yolo_region_count(region_points=  [(700, 800), (1900, 700), (1600, 500), (600, 550)]):
+    # [ unten links , unten rechts, oben rechts, oben links]
+    # Nested function for YOLO and Object Counter, with region points as input parameter
+    model = YOLO("yolov8n.pt")
+    counter = object_counter.ObjectCounter()
+    counter.set_args(view_img=True, reg_pts=region_points, classes_names=model.names, draw_tracks=True)
+    def yolo_region_count2(frame):
+        tracks = model.track(frame, persist=True, show=False)
+        result = counter.start_counting(frame, tracks)
+        return result
+    return yolo_region_count2
+
+def yolo_predict():
+    model = YOLO("yolov8n.pt").to('mps')
+    # {0: 'person',
+    #  1: 'bicycle',
+    #  2: 'car',
+    #  3: 'motorcycle',
+    #  4: 'airplane',
+    #  5: 'bus',
+    #  6: 'train',
+    #  7: 'truck',
+    #  8: 'boat',
+    #  9: 'traffic light', .... }
+    classes = [2,3,5,7]
+    def yolo_predict2(frame):
+        results = model.predict(frame, stream_buffer = True, classes = classes)
+        results = results[0].plot(conf = False, labels = False)
+        return results
+    return yolo_predict2
+
+def yolo_track():
+    model = YOLO("yolov8n.pt")
+    classes = [2, 3, 5, 7]
+    def yolo_track2(frame):
+        results = model.predict(frame, classes = classes, stream_buffer = True)
+        boxes = results[0].boxes.xywh
+        frame = results[0].plot(conf = False, labels = False)
+        for box in boxes:
+            x,y,_, _ = box
+            x = int(x)
+            y = int(y)
+            frame = cv.circle(frame,(x,y), 10, (0,0,255), -1)
+        return frame , x , y
+    return yolo_track2
+
+
+def box_middle(x,y,w,h):
+    return (int(x - w//2), int(y - h//2))

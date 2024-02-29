@@ -44,4 +44,3 @@ def plotData(array = None, cap = None):
 
     return
 
-
