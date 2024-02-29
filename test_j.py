@@ -55,9 +55,10 @@ def main():
             # frame7 = add_text_to_frame(frame7, 'Lukas Kanade')
 
         else:
-            #frame = yolo_region(frame)
+            frame, ins, out = yolo_region(frame)
+            print(f'In: {ins} Out: {out}')
             #frame = yolo_pred(frame)
-            frame, _, _ = yolo_tracker(frame)
+            #frame = yolo_tracker(frame)
 
         #frame = cv.dilate(frame8, None, iterations=2)
         #q_, frame = cv.threshold(frame, 0.9, 1, cv.THRESH_BINARY)

@@ -434,9 +434,11 @@ def yolo_region_count(region_points=  [(700, 800), (1900, 700), (1600, 500), (60
     Returns:
         function: A function that takes a frame as input and returns the result of object counting within the specified region.
     """
+    classes = [2,3,5,7]
     model = YOLO("yolov8n.pt")
     counter = object_counter.ObjectCounter()
     counter.set_args(view_img=True, reg_pts=region_points, classes_names=model.names, draw_tracks=True)
+
     def yolo_region_count2(frame):
         """
         Performs object tracking using the YOLO model and counts the number of objects in a given frame.
@@ -448,9 +450,11 @@ def yolo_region_count(region_points=  [(700, 800), (1900, 700), (1600, 500), (60
             result: The count of objects in the frame.
 
         """
-        tracks = model.track(frame, persist=True, show=False)
+        inside = counter.in_counts
+        outside = counter.out_counts
+        tracks = model.track(frame, persist=True, show=False,classes = [2,3,5,7])
         result = counter.start_counting(frame, tracks)
-        return result
+        return result, inside, outside
     return yolo_region_count2
 
 def yolo_predict():
@@ -514,14 +518,15 @@ def yolo_track():
             y: The y-coordinate of the last detected object.
         """
         results = model.predict(frame, classes=classes, stream_buffer=True)
-        boxes = results[0].boxes.xywh
+        boxes = results[0].boxes.xyxy
         frame = results[0].plot(conf=False, labels=False)
         for box in boxes:
-            x, y, _, _ = box
-            x = int(x)
-            y = int(y)
+            x, y, w, h = box
+            x,y = box_middle(x,y,w,h)
             frame = cv.circle(frame, (x, y), 10, (0, 0, 255), -1)
-        return frame, x, y
+
+        return frame
+    return yolo_track2
 
 
 
@@ -540,4 +545,21 @@ def box_middle(x, y, w, h):
     """
     return (int(x - w//2), int(y - h//2))
 def box_middle(x,y,w,h):
-    return (int(x - w//2), int(y - h//2))
+    w = w-x
+    h = h-y
+    return (int(x + w//2), int(y + h//2))
+
+def noah_coord_trafo(x,y,w,h):
+    """
+    Calculate the coordinates of the middle point of a box.
+
+    Parameters:
+    x (int): The x-coordinate of the top-left corner of the box.
+    y (int): The y-coordinate of the top-left corner of the box.
+    w (int): The width of the box.
+    h (int): The height of the box.
+
+    Returns:
+    tuple: The coordinates of the middle point of the box as a tuple (x, y).
+    """
+    return (int(x), int(y), int(w-x), int(h-y))
