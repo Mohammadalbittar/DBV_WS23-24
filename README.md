@@ -112,6 +112,27 @@ Klassische Ansätze versuchen bewegte Objekte über verschiedene Methoden zu Seg
 
 ## 4. Evaluation
 
+-  Getestet wurden mehrere Videos die über Youtube-Links oder als MP4 an das Programm übergeben wurden
+   -  <u>Beispiellinks:</u>
+      -  https://www.youtube.com/watch?v=2X27I6BAJcI
+-  Hiermit sollte verdeutlich werden welche Stärken und Schwächen klassische Ansätze und derzeitige Machine Learning Ansätze haben
+   -  <u>Klassisch:</u>
+      -  Stärken und SChwächen einfügen
+   -  <u>Machine Learning:</u>
+      -  Stärken und Schwächen einfügen
+   -  Abschließender Absatz: Was haben wir gezeigt, was konnten wir nicht zeigen
+-  <u>Laufzeit:</u> 
+   -  Klassisch FPS
+   -  Machine Learning FPS (Loading + Inference + Postprocessing)
+-  Limitierungen der Ansätze: 
+   -  <u>Klassisch:</u>
+   -  <u>Machine Learning:</u>
+-  
+
+​	
+
+
+
 * Strukturieren Sie Ihre Ergebnisse!
 * Auf welchen Datensätzen haben Sie ihr Programm getestet? (2-3 Sätze)
 * Was wollten Sie damit zeigen? 
