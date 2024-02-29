@@ -11,13 +11,13 @@ def main():
     url = 'https://www.youtube.com/watch?v=2X27I6BAJcI'  # URL für Testvideo
 
     ######## Initialisierung ########
-    path = r'C:\Noah\Studium Lokal\Master\DBV_Abschlussprojekt\TestVideo1.mp4'  # Videopfad
+    path = r'resources/test_video.mp4'  # Videopfad
 
-    cap = get_livestream(url)
-    width = int(cap.get(cv.CAP_PROP_FRAME_WIDTH))
-    height = int(cap.get(cv.CAP_PROP_FRAME_HEIGHT))
-    length  = int(cap.get(cv.CAP_PROP_FRAME_COUNT))
-    _, frame_one = cap.read()
+    # cap = get_livestream(url)
+    # width = int(cap.get(cv.CAP_PROP_FRAME_WIDTH))
+    # height = int(cap.get(cv.CAP_PROP_FRAME_HEIGHT))
+    # length  = int(cap.get(cv.CAP_PROP_FRAME_COUNT))
+    # _, frame_one = cap.read()
 
     ot = Objecttracking()    # ot als Objekt der Klasse Objecttracking definiert
 
@@ -27,11 +27,15 @@ def main():
     kernal_Cl = np.ones((8,8),np.uint8)  # Schließung
     kernal_e = np.ones((4,4),np.uint8)  # Erodieren
 
-
+    yolo_regio = yolo_region_count([(700, 800), (1900, 700), (1600, 500), (600, 550)])
 
     ######## Anwendungsteil ########
     cap = cv.VideoCapture(path)
     start_time = time.time()  # Startzeit des Videos
+    width = int(cap.get(cv.CAP_PROP_FRAME_WIDTH))
+    height = int(cap.get(cv.CAP_PROP_FRAME_HEIGHT))
+    length = int(cap.get(cv.CAP_PROP_FRAME_COUNT))
+    _, frame_one = cap.read()
 
     while True:
         ret, frame = cap.read() # Frame einlesen
@@ -76,9 +80,20 @@ def main():
         cv.line(frame, (ot.crossing_lines[2][0], ot.crossing_lines[2][1]), (ot.crossing_lines[2][2], ot.crossing_lines[2][3]), (0, 0, 255), 2)  # rechts
         cv.line(frame, (ot.crossing_lines[3][0], ot.crossing_lines[3][1]), (ot.crossing_lines[3][2], ot.crossing_lines[3][3]), (0, 0, 255), 2)  # oben
 
+        ###### YOLO ######
+
+        frame_yolo, ins, out = yolo_regio(frame)
+
+
+
+
+
+        ##### Ausgabe von Bildern #####
+        video_tiling_mixed(frame, frame_yolo, width, height)
+
         #cv.imshow('Maske', e_img)
         #cv.imshow('Region of Interest', roi)
-        cv.imshow('Frame', frame)
+        #cv.imshow('Frame', frame)
 
         key = cv.waitKey(30)
         if key == 27:   # Durch Drücken der ESC-Taste wird das Programm geschlossen

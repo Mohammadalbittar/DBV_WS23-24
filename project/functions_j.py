@@ -462,6 +462,8 @@ def yolo_region_count(region_points=  [(700, 800), (1900, 700), (1600, 500), (60
     
     Returns:
         function: A function that takes a frame as input and returns the result of object counting within the specified region.
+
+    Die Umsetzung dieser Funktion ist an verschiedenen Online Beispielen orientiert und notwenige Stellen wurden für unsere Umsetzung abgewandelt.
     """
     classes = [2,3,5,7]
     model = YOLO("yolov8n.pt")
