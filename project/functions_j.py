@@ -522,17 +522,7 @@ def yolo_track():
             y = int(y)
             frame = cv.circle(frame, (x, y), 10, (0, 0, 255), -1)
         return frame, x, y
-    def yolo_track2(frame):
-        results = model.predict(frame, classes = classes, stream_buffer = True)
-        boxes = results[0].boxes.xywh
-        frame = results[0].plot(conf = False, labels = False)
-        for box in boxes:
-            x,y,_, _ = box
-            x = int(x)
-            y = int(y)
-            frame = cv.circle(frame,(x,y), 10, (0,0,255), -1)
-        return frame , x , y
-    return yolo_track2
+
 
 
 def box_middle(x, y, w, h):
