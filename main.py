@@ -13,6 +13,7 @@ def main():
 
     ######## Initialisierung ########
     path = r'resources/video2.mp4'  # Videopfad
+    change_roi = False
 
 
 
@@ -47,6 +48,8 @@ def main():
 
 
     ot = Objecttracking()    # ot als Objekt der Klasse Objecttracking definiert
+    if change_roi:  # Wenn True, kann die roi mit der Funktion ot.set_roi angepasst werden
+        ot.set_roi(ot.Imgage_from_Video(path, 100))
 
     #Kernals für die Maske
     fgbg = cv.createBackgroundSubtractorMOG2(detectShadows=True)
