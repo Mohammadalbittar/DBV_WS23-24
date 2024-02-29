@@ -1,17 +1,12 @@
 import cv2
 import numpy as np
 from collections import Counter
-from project.functions_j import motion_extraction
-
 
 # Funktion zum Erzeugen von befahrender Strecke
 def roadExtract(video_path):
     # Erstellen von zwei Captures für Bildsubtraktion
     cap1 = cv2.VideoCapture(video_path)
     cap2 = cv2.VideoCapture(video_path)
-
-
-
 
     # Variablen zum Justieren des Ergebnisses
     frameDistance_var, iteration_var, threshold_var, first_frame_var = 20, 20, 30, 1500
