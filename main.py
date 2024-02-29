@@ -11,7 +11,7 @@ def main():
     url = 'https://www.youtube.com/watch?v=2X27I6BAJcI'  # URL für Testvideo
 
     ######## Initialisierung ########
-    path = r'C:\Noah\Studium Lokal\Master\DBV_Abschlussprojekt\TestVideo1.mp4'  # Videopfad
+    #path = r'C:\Noah\Studium Lokal\Master\DBV_Abschlussprojekt\TestVideo1.mp4'  # Videopfad
 
     cap = get_livestream(url)
     width = int(cap.get(cv.CAP_PROP_FRAME_WIDTH))
@@ -30,7 +30,7 @@ def main():
 
 
     ######## Anwendungsteil ########
-    cap = cv.VideoCapture(path)
+    #cap = cv.VideoCapture(path)
 
     while True:
         ret, frame = cap.read() # Frame einlesen

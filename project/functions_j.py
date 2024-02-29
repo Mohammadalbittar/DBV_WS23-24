@@ -25,11 +25,17 @@ def get_video(url:str):
     Returns:
     cv.VideoCapture: The VideoCapture object representing the video.
     """
-    video = pafy.new(url)       #Create pafy object with youtube URL
-    best_qual_stream =video.getbest()   # get the best quality of the stream
-    cap = cv.VideoCapture(best_qual_stream.url)        # OpenCV Video Capture Objekt
+    video = pafy.new(url)  # Create pafy object with youtube URL
+    streams = video.streams
+    print(streams)
+    if len(streams) >= 1:
+        second_lowest_qual_stream = streams[-1]  # Choosing the lowest quality stream
+    else:
+        second_lowest_qual_stream = video.getbest()  # If only one stream is available, use it
 
-    return cap      # Return named CV Video Capture Object
+    cap = cv.VideoCapture(second_lowest_qual_stream.url)  # OpenCV Video Capture Object
+
+    return cap  # Return named CV Video Capture Object
 
 def get_livestream(url:str):
     """
