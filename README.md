@@ -51,6 +51,7 @@ Für die Analyse der Kreuzung soll der Straßenverlauf erkannt werden, um die Ve
 - https://www.sciencedirect.com/science/article/pii/S0167865502001940?ref=pdf_download&fr=RR-2&rr=85d0c9f509504510#FIG1
 - https://docs.ultralytics.com/
 - Motion Extraction (https://www.youtube.com/watch?v=NSS6yAMZF78)
+- OpenCV Objekterkennung (https://youtu.be/O3b8lVF93jU)
 
 Klassische Ansätze versuchen bewegte Objekte über verschiedene Methoden zu Segmentieren und zu erkennen. Ausgehend von dieser Idee, versuchen wir bewegte Objekte von einem unbewegten Hintergrund zu trennen. 
 
