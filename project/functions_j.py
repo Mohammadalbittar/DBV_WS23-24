@@ -322,6 +322,29 @@ def video_tiling_mixed(frame1, frame2, frame3, frame4, width, height):
 
     return output_frame
 
+def video_tiling_mixed(frame1, frame2, width, height):
+    """
+    Combines four input frames into a single output frame using tiling.
+
+    Args:
+        frame1 (numpy.ndarray): The first input frame.
+        frame2 (numpy.ndarray): The second input frame.
+        width (int): The width of each input frame.
+        height (int): The height of each input frame.
+
+    Returns:
+        numpy.ndarray: The output frame with the two input frames tiled together.
+    """
+    frame1 = cv.cvtColor(frame1, cv.COLOR_GRAY2BGR) if len(frame1.shape) == 2 else frame1
+    frame2 = cv.cvtColor(frame2, cv.COLOR_GRAY2BGR) if len(frame2.shape) == 2 else frame2
+
+
+    output_frame = np.zeros((height * 2, width * 2, 3), dtype=np.uint8)
+
+    output_frame[:height, :width, :3] = frame1
+    output_frame[:height, width:, :3] = frame2
+
+    return output_frame
 
 def add_text_to_frame(frame, text):
     """
