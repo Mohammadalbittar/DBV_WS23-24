@@ -344,12 +344,10 @@ def video_tiling_mixed(frame1, frame2, width, height):
     frame1 = cv.cvtColor(frame1, cv.COLOR_GRAY2BGR) if len(frame1.shape) == 2 else frame1
     frame2 = cv.cvtColor(frame2, cv.COLOR_GRAY2BGR) if len(frame2.shape) == 2 else frame2
 
-
-    output_frame = np.zeros((height, width*2, 3), dtype=np.uint8)
+    output_frame = np.zeros((height*2, width, 3), dtype=np.uint8)
 
     output_frame[:height, :width, :3] = frame1
-    output_frame[:height, width:, :3] = frame2
-
+    output_frame[height:, :width, :3] = frame2
 
     return output_frame
 
@@ -469,7 +467,7 @@ def yolo_region_count(region_points=  [(700, 800), (1900, 700), (1600, 500), (60
     classes = [2,3,5,7]
     model = YOLO("yolov8n.pt")
     counter = object_counter.ObjectCounter()
-    counter.set_args(view_img=True, reg_pts=region_points, classes_names=model.names, draw_tracks=True)
+    counter.set_args(view_img=False, reg_pts=region_points, classes_names=model.names, draw_tracks=True)
 
     def yolo_region_count2(frame):
         """
