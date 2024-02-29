@@ -36,7 +36,6 @@ Als Sprache sind englisch oder deutsch erlaubt.
 Anstatt in dieser ReadMe zu arbeiten, dürfen Sie auch ein PDF-Dokument erzeugen, z.B. mit LaTeX. In diesem Falle verlinken Sie bitte an dieser Stelle das entsprechende Dokument und legen alle zur Erstellung notwendigen Ressourcen in dem separaten Ordner *resources* ab.
 
 ## 1. Aufgabe und Abgrenzung
-
 Dieser Abschnitt soll eine Art Überblick über den Rest der Arbeit bieten.
 
 * Was ist das von Ihnen angegangene Problem. (1-2 Sätze)
@@ -47,6 +46,10 @@ Dieser Abschnitt soll eine Art Überblick über den Rest der Arbeit bieten.
 * Was für nennenswerte Ergebnisse haben Sie erzielt? Bspw. 43% schneller, robuster als andere, etc.
 * Überblick über ihr weiteres Vorgehen, welches unten beschrieben wird. (3-5 Sätze)
 
+Mit diesem Projekt soll das Tracken vom Fahrzeugen in einer Kreuzung für die weitere Analyse der Straßensituation ermöglicht werden. Dazu werden einerseits Techniken mit traditionellen Verfahren der OpenCV-Bibliothek mit der Machine-Learning Methode YOLOv5 verglichen. Dadurch soll herausgefunden werden, wie sich beide Ansätze möglicherweise gewinnbringend Ergänzen könnten. (wissenschaftlicher mehrwert).
+Für die Analyse der Kreuzung soll der Straßenverlauf erkannt werden, um die Verläufe des Verkehrsflusses anhand der gefahrenen Wege festzustellen. Dazu sollen an jeder Ein- bzw. Ausfahrt der Kreuzung automatisch Linien erkannt werden. Über die Mittelpunkte der getracktet Fahrzeuge können dann Abstände zu diesen Linien berechnet werden, die für das Zählen der Überquerten Linien verwendet werden. Mit diesen Daten kann anschließend der Verkehrsfluss, die Verkehrsdichte und die mittlere Geschwindigkeit in der Kreuzung erfasst werden.
+(test)
+(ergebnisse)
 ## 2. Theoretische Grundlagen und Methoden mit entsprechender Literaturangabe
 
 * Worauf bauen Sie auf?
