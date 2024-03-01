@@ -32,3 +32,20 @@ Für die Umsetzung mit Machine Learning wurde YoloV8 ausgewählt, da dieses verg
 
 
 
+Das erfassen von Fahrzeugen klappt relativ zuverlässig mit YoloV8. 
+
+Stärken: 
+
+Es werden bewegte Objekte im Bildbereich erkannt und einer Klasse wie z.B. Auto, Motorradfahrer, Truck, Laster oder Fußgänger zugeordnet. Auch werden zwei Objekte bei kleineren Überschneidungen noch differenziert. Die Modelle funktionieren "Out-of-the-Box" sehr gut und müssen für den Anfang nicht zusätzlich nachtrainiert werden. 
+
+
+
+Schwächen: 
+
+Fehler können auftreten, wenn Fahrzeuge sich zu sehr überscheiden oder von in den Bildbereich ragenden Schildern, Laternen oder Ampeln teilweise verdeckt werden, wodurch Yolo das Fahrzeug während der Verdeckung als Instanz verliert und danach zwar wiedererkennt, aber als neue Insanz, was die Werte der Verkehrsanalyse verfälscht. 
+
+
+
+Wie könnte man den Ansatz erweitern: 
+
+Man könnte versuchen 

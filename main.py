@@ -72,7 +72,7 @@ def main():
         #cv2.imshow('ROI', roi)
 
         ## 1. Zeitmessung Anfang
-        start_time = time.time()*1000
+        start_time_cv = time.time()*1000
 
         #Erstellen der Maske
         fgmask = fgbg.apply(roi)    # Vordergrund vom Hintergrund trennen
@@ -111,16 +111,16 @@ def main():
         cv.line(frame, (ot.crossing_lines[2][0], ot.crossing_lines[2][1]), (ot.crossing_lines[2][2], ot.crossing_lines[2][3]), (0, 0, 255), 2)  # rechts
         cv.line(frame, (ot.crossing_lines[3][0], ot.crossing_lines[3][1]), (ot.crossing_lines[3][2], ot.crossing_lines[3][3]), (0, 0, 255), 2)  # oben
 
-        end_time = time.time()*1000  # Endzeit der Zeitmessung
-        elapsed_time = end_time - start_time  # Dauer, die die Bildverarbeitung benötigt hat
-        frame = add_text_to_frame(frame, f'{elapsed_time:.2f} ms/frame')
+        end_time_cv = time.time()*1000  # Endzeit der Zeitmessung
+        elapsed_time_cv = end_time_cv - start_time_cv # Dauer, die die Bildverarbeitung benötigt hat
+        frame = add_text_to_frame(frame, f'{elapsed_time_cv:.2f} ms/frame')
 
         ###### YOLO ######
-        start_time = time.time() *1000 # Startzeit der Zeitmessung
+        start_time_yolo = time.time() *1000 # Startzeit der Zeitmessung
         frame_yolo, ins, out = yolo_regio(frame_y)
-        end_time = time.time()*1000  # Endzeit der Zeitmessung
-        elapsed_time = end_time - start_time
-        frame_yolo = add_text_to_frame(frame_yolo, f'{elapsed_time:.2f} ms/frame')
+        end_time_yolo = time.time()*1000  # Endzeit der Zeitmessung
+        elapsed_time_yolo = end_time_yolo - start_time_yolo
+        frame_yolo = add_text_to_frame(frame_yolo, f'{elapsed_time_yolo:.2f} ms/frame')
 
         ##### Ausgabe von Bildern #####
         frame = video_tiling_mixed(frame, frame_yolo, width, height)
