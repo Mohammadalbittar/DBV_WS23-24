@@ -157,6 +157,8 @@ def main():
         ##### Ausgabe von Bildern #####
         frame = video_tiling_mixed(frame, frame_yolo, width, height)
 
+
+        out.write(frame)  # Schreibt das Bild in das Video
         cv.imshow('Frame', frame)
         #cv.imshow('Maske', e_img)
         #cv.imshow('Region of Interest', roi)
@@ -183,6 +185,7 @@ def main():
         plt.ylabel('Time [ms]')
         plt.legend()
         plt.savefig('resources/Zeitmessung.png')
+        out.release()
 
 
     # Daten auswerten
