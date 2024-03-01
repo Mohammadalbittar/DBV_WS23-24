@@ -17,10 +17,8 @@ def main():
 
     ######## Initialisierung ########
     change_roi = False  # Wenn True, kann die roi mit der Funktion ot.set_roi angepasst werden
-
-    #Automatically calculate ROI
-    cal_roi = True  # Wenn True, wird die ROI automatisch berechnet
-
+    auto_calc_roi = False  # Wenn True, wird die ROI automatisch berechnet
+    # Wenn beide False, Standardwerte aus ot.roi[] verwendet
 
     ######## Initial Analysis ########
     cap = cv.VideoCapture(path)
@@ -30,41 +28,19 @@ def main():
     length = int(cap.get(cv.CAP_PROP_FRAME_COUNT))
     _, frame_one = cap.read()
 
-
-    background_image = extract_background(cap,500)
-    #cv.imshow("Background",background_image)
-    #cv.waitKey(0)
-    if cal_roi:
-        #points_stat = find_Stats_point(cap,background_image)
-        points = np.load("Points_Stationary.npy")
-        print(points)
-        intersections = find_rois_points(background_image,points)
-
-    '''
-    while True:
-        run, frame = cap.read()
-        if not run:
-            print('Initial Analysis finished or Video Error')
-            break
-        ## Hier die FUnktion für die Initiale analyse
-
-
-
-
-        ##
-
-
-    end_time = time.time()  # Endzeit des Videos
-    elapsed_time_analyse = end_time - start_time  # Dauer, die das Video abgespielt wurde
-    cap.release()
-    '''
-
-
-
-
     ot = Objecttracking()    # ot als Objekt der Klasse Objecttracking definiert
+
     if change_roi:  # Wenn True, kann die roi mit der Funktion ot.set_roi angepasst werden
         ot.set_roi(ot.Imgage_from_Video(path, 100))
+
+    if auto_calc_roi:
+        #points_stat = find_Stats_point(cap,background_image)
+        background_image = extract_background(cap, 500)
+        # cv.imshow("Background",background_image)
+        points = np.load("Points_Stationary.npy")
+        #print(points)
+        intersections = find_rois_points(background_image,points)
+        print(intersections)
 
     #Kernals für die Maske
     fgbg = cv.createBackgroundSubtractorMOG2(detectShadows=True)
@@ -85,7 +61,15 @@ def main():
     while True:
         ret, frame = cap.read() # Frame einlesen
         frame_y = frame.copy()
+
+        if auto_calc_roi: # Übergibt die entscheidenden Punkte aus der automatischen ROI Berechnung an die roi für ot
+            ot.roi[0] = intersections[3][0] # x1
+            ot.roi[1] = intersections[3][1] # y1
+            ot.roi[2] = intersections[0][0] # x2
+            ot.roi[3] = intersections[0][1] # y2
+
         roi = frame[ot.roi[1]:ot.roi[3], ot.roi[0]: ot.roi[2]] # Region_of_interest Format: y1, y2 : x1, x2
+        #cv2.imshow('ROI', roi)
 
         ## 1. Zeitmessung Anfang
         start_time = time.time()*1000
@@ -121,8 +105,6 @@ def main():
             print("")
         print(ot.car_in_out)
 
-        #data_plot.plotData(ot.car_in_out, cap)
-
         # Einzeichnen der Linien, an denen die Überquerung gezählt wird
         cv.line(frame, (ot.crossing_lines[0][0], ot.crossing_lines[0][1]), (ot.crossing_lines[0][2], ot.crossing_lines[0][3]), (0, 0, 255), 2)  # links
         cv.line(frame, (ot.crossing_lines[1][0], ot.crossing_lines[1][1]), (ot.crossing_lines[1][2], ot.crossing_lines[1][3]), (0, 0, 255), 2)  # unten
@@ -133,17 +115,12 @@ def main():
         elapsed_time = end_time - start_time  # Dauer, die die Bildverarbeitung benötigt hat
         frame = add_text_to_frame(frame, f'{elapsed_time:.2f} ms/frame')
 
-
         ###### YOLO ######
         start_time = time.time() *1000 # Startzeit der Zeitmessung
         frame_yolo, ins, out = yolo_regio(frame_y)
         end_time = time.time()*1000  # Endzeit der Zeitmessung
         elapsed_time = end_time - start_time
         frame_yolo = add_text_to_frame(frame_yolo, f'{elapsed_time:.2f} ms/frame')
-
-
-
-
 
         ##### Ausgabe von Bildern #####
         frame = video_tiling_mixed(frame, frame_yolo, width, height)

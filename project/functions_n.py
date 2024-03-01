@@ -7,7 +7,7 @@ class Objecttracking:   # Die Klasse beinhaltet Funktionen für das Tracken der 
         self.center_points = {} # Punkte in der Mitte der BoundingBoxes mit der Fahrzeug-ID im Dictionary gespeichert
         self.roi = [302, 278, 1278, 567] # x1, y1, x2, y2 - Standardwerte für roi
         self.crossing_lines = [[400, 375, 480, 525], [562, 535, 1215, 475], [980, 345, 1215, 465], [455, 360, 925, 335]] # x1, y1, x2, y2 - links, unten, rechts, oben
-        self.area_crossing = [(460, 370), (520, 520), (1150, 460), (940, 345)]
+        self.area_crossing = [(460, 370), (520, 520), (1150, 460), (940, 345)]  # Bereich der Kreuzung
 
         self.id_count = 0   # Counter für das Hinzufügen neuer Fahrzeuge
         self.car_in_out = np.array([], dtype={'names': ['id', 'in', 'out'], 'formats': ['int', 'int', 'int']})  # Array in dem die Fahrzeug-ID und die Ein-/ Ausfahrt auf die Kreuzung gespeichert werden
@@ -49,8 +49,7 @@ class Objecttracking:   # Die Klasse beinhaltet Funktionen für das Tracken der 
         self.center_points = new_center_points.copy()   # Die neuen Mittelpunktkoordinaten werden an das Dictionary übergeben
         return objects_bbs_ids  # Alle relevanten Variablen werden von der Funktion zurückgegeben
 
-    def dist_to_line(self,
-                     line):  # Diese Funktion bestimmt den Abstand der Mittelpunkte zu einer Linie und überprüft, wann die Linie überquert wurde
+    def dist_to_line(self, line):  # Diese Funktion bestimmt den Abstand der Mittelpunkte zu einer Linie und überprüft, wann die Linie überquert wurde
         x1 = self.crossing_lines[line][0]  # Koordinaten der Linie entnehmen
         y1 = self.crossing_lines[line][1]
         x2 = self.crossing_lines[line][2]
@@ -65,48 +64,38 @@ class Objecttracking:   # Die Klasse beinhaltet Funktionen für das Tracken der 
             dist = abs((y2 - y1) * x0 - (x2 - x1) * y0 + x2 * y1 - y2 * x1) / np.sqrt(
                 (y2 - y1) ** 2 + (x2 - x1) ** 2)  # Berechnet den Abstand vom Punkt zur Linie
 
-            if np.isin(0, self.car_in_out['in'][
-                id]) and dist < 5:  # Überprüft, ob der Abstand zur Linie klein genug ist (nahe 0) und das Fahrzeug schon einmal die Linie überquert hat
-                index = np.where(self.car_in_out['id'] == id)[
-                    0]  # Sucht die Stelle im Array, an der das Fahrzeug abgelegt wurde
+            if np.isin(0, self.car_in_out['in'][id]) and dist < 5:  # Überprüft, ob der Abstand zur Linie klein genug ist (nahe 0) und das Fahrzeug schon einmal die Linie überquert hat
+                index = np.where(self.car_in_out['id'] == id)[0]  # Sucht die Stelle im Array, an der das Fahrzeug abgelegt wurde
                 if len(index) > 0:  # Überprüft, ob das Fahrzeug im Array gefunden wurde
-                    self.car_in_out['in'][
-                        index] = line + 1  # Setzt den Wert in der 'in'-Spalte an der entsprechenden Stelle auf line + 1 (damit es keine 0. Linie gibt)
+                    self.car_in_out['in'][index] = line + 1  # Setzt den Wert in der 'in'-Spalte an der entsprechenden Stelle auf line + 1 (damit es keine 0. Linie gibt)
 
-            if np.isin(0, self.car_in_out['out'][
-                id]) and dist < 5:  # Gleich wie vorher nur für die Ausfahrt, also die 2. Linienüberquerung
+            if np.isin(0, self.car_in_out['out'][id]) and dist < 5:  # Gleich wie vorher nur für die Ausfahrt, also die 2. Linienüberquerung
                 index = np.where(self.car_in_out['id'] == id)[0]
                 if len(index) > 0:
-                    if np.isin(line + 1, self.car_in_out['in'][id]) or np.isin(0, self.car_in_out['in'][
-                        id]):  # Stellt sicher, dass das Fahrzeug zuvor über eine andere Linie gefahren ist
+                    if np.isin(line + 1, self.car_in_out['in'][id]) or np.isin(0, self.car_in_out['in'][id]):  # Stellt sicher, dass das Fahrzeug zuvor über eine andere Linie gefahren ist
                         None
                     else:
                         self.car_in_out['out'][index] = line + 1
 
-    def point_inside_polygon(self, point,
-                             polygon):  # Die Funktion überprüft, ob sich ein Punkt in einem Polygon befindet
+    def point_inside_polygon(self, point, polygon):  # Die Funktion überprüft, ob sich ein Punkt in einem Polygon befindet
 
         n = len(polygon)
         inside = False  # Rückgabewert (True = Punkt ist im Polygon)
         x0, y0 = point
-        x0 += self.roi[
-            0]  # Die Mittelpunktkoordinaten sind in roi definiert und müssen auf die Koordinaten von frame zurückgerechnet werden
+        x0 += self.roi[0]  # Die Mittelpunktkoordinaten sind in roi definiert und müssen auf die Koordinaten von frame zurückgerechnet werden
         y0 += self.roi[1]
         point = (x0, y0)
 
         # Prüfen, ob der Punkt innerhalb des Polygons liegt
         p1x, p1y = polygon[0]  # Startkoordinaten
         for i in range(n + 1):
-            p2x, p2y = polygon[
-                i % n]  # Durchläuft alle Kanten des Polygons, über i % n wird sichergestellt, dass der Index innerhalb der Grenzen des Polygonarrays bleibt.
+            p2x, p2y = polygon[i % n]  # Durchläuft alle Kanten des Polygons, über i % n wird sichergestellt, dass der Index innerhalb der Grenzen des Polygonarrays bleibt.
             if point[1] > min(p1y, p2y):
                 if point[1] <= max(p1y, p2y):
                     if point[0] <= max(p1x, p2x):
                         if p1y != p2y:
-                            xinters = (point[1] - p1y) * (p2x - p1x) / (
-                                        p2y - p1y) + p1x  # Berechnung des Schnittpunkts mit der horizontalen Linie durch den Punkt
-                        if p1x == p2x or point[
-                            0] <= xinters:  # Überprüfung, ob der Schnittpunkt auf der linken Seite des Punktes liegt
+                            xinters = (point[1] - p1y) * (p2x - p1x) / (p2y - p1y) + p1x  # Berechnung des Schnittpunkts mit der horizontalen Linie durch den Punkt
+                        if p1x == p2x or point[0] <= xinters:  # Überprüfung, ob der Schnittpunkt auf der linken Seite des Punktes liegt
                             inside = not inside
             p1x, p1y = p2x, p2y  # Aktualisieren der Startkoordinaten für den nächsten Schleifendurchlauf
         return inside

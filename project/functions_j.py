@@ -8,7 +8,6 @@ import torch
 import sys
 import numpy as np
 from typing import Union
-import hdbscan
 
 
 def get_video(url:str):
