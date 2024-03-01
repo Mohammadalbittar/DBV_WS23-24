@@ -15,6 +15,14 @@ def main():
     path = r'resources/video2.mp4'  # Videopfad
     url = 'https://www.youtube.com/watch?v=2X27I6BAJcI'  # URL für Testvideo
 
+    ######## Initialisierung Video Speichern als MP4########
+    write_video = True
+    if write_video:
+        fourcc = cv.VideoWriter_fourcc(*'mp4v')
+        out = cv.VideoWriter('output.mp4', fourcc, 30.0, (1920, 1080))
+
+
+
     ######## Initialisierung ########
     change_roi = False  # Wenn True, kann die roi mit der Funktion ot.set_roi angepasst werden
     auto_calc_roi = False  # Wenn True, wird die ROI automatisch berechnet
