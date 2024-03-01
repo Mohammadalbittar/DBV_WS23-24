@@ -5,7 +5,7 @@ Listen Sie hier noch einmal alle Teammitglieder mit Namen auf.
 
 - Mohammad Albittar
 - Noah Kasten
-- Mostafa .. Nachname Ergänzen
+- Mostafa Mahmoud
 - Jan Sbiegay
 
 # Projektbeschreibung
@@ -99,6 +99,31 @@ Um den Rechenaufwand zu reduzieren, wird der gesamte Bildausschnitt auf eine „
 <center><img src="resources/Veranschaulichung_set_roi.png" alt="Veranschaulichung_set_roi" /></center>
 
    * Mostafa
+
+Neben dem Nutzer definierten ROI, wird auch ROI automatsich bestimmt. Dabei wurde eine Methode zum Extrahieren den Vier Eckpunkten des ROIs entwickelt. Dafür wurde 3 Funktionen geschrieben, extract_background(), find_Stats_point() und find_rois_points().
+
+Die Grundidee zum Berechnen der ROI Eckpunkte ist das Erkennen von an der Ampel stillstehenden Autos und dadurch Punktwolken zu erzeugen. Aus den Punktwolken können dann die Schwerpunkte bestimmt werden. Die Schwerpunkten der Punktwolken sollen bei einer typisch Ampelkreuzung auf der 4 Seiten des ROIs rechtecks liegen.
+
+Um die stehenden Autos zu erkennen, muss eine Maske erstellt werden, die nur still stehende Autos erkennt. Für die Erzeugung der Maske werden zwei andere Masken miteinander verglichen, diese sind:
+* Maske für bewegende Autos
+* Maske für bewegende und still stehende Autos
+
+Die erste Maske lässt sich durch hauptsächlich 2 OpenCV Funktionen berechnen, createBackgroundSubtractorKNN() und createBackgroundSubtractorMOG2(). Lediglich createBackgroundSubtractorKNN() wird verwendet, da es durch Experiementieren zu besseren Ergebnisse geführt hat. Die Berechung der zweiten Maske erfolgt durch den Vergleich zwischen dem Hintergrundbild und dem aktuellen Frame. Die Erzeugung des Hintergrundbilds geschieht in der selbst definierten Funktion, extract_background(). In der Funktion wird das Video Capture gesamplet. Von den gesampleten Frames wird der Median berechnet, was dann  den Hintergrund ergibt. Die Ergebnisse dieser Funktion werden dann für die folgende funktion, find_Stats_point(), verwendet. Diese Funktion ergibt als Output Punkten, wo im Video Fahrzeugen Standen. In der Funktion wird zuerst eine Differenz Maske erstellt. Die Maske ist die Differenz zwischen dem zuvor erzeugten Hintergrund Bild und dem aktuellen Frame. Dadurch werden alle Autos erkannt.
+<center><img src="resources/Differenz_Maske.PNG" alt="Differenz Maske" /></center>
+
+Von dieser Maske werden nun die bewegenden Autos subtrahiert. Durch createBackgroundSubtractorKNN() lassen sich die bewegenden Autos erkennen. Die erkannten Punkte werden in der Diff Maske identifiziert und auf Null gesetzt. Damit erhält man das Folgende:
+<center><img src="resources/Auto_erkannt.PNG" alt="Auto KNN Subtractor" /></center>
+<center><img src="resources/Auto_geloescht.png" alt="Bewegende Auto subtrahiert" /></center>
+
+Zum Erkennen von Autos wird die OpenCV Funktionen verwendet, findContours(), und wird die Fläche berechnet. Nur die Fläche über eine bestimmten Threshold, was empirisch ermittelt wurde, werden als Objekt erkannt. Der Grund dafür ist, das kleine unerwüschte Störungen nicht erkannt werden. Um den Contours wird ein Rechteck gezeichnet und der Mittelpunkt des Reckteckes berechnet, gezeichnet und gespeichert.
+<center><img src="resources/erkannten_Still_stehnde_Autos.PNG" alt="erkannten stehende Autos" /></center>
+
+Von dem gespeicherten Mittelpunkten werden in find_rois_points() die Schwerpunkten der Punktwolken gerechnet. Hier wird dafür der Kmeans clustering Algorithmus verwendet.
+<center><img src="resources/Punktwole%20und%20Centeriods.PNG" alt="Punktwolken und Clusters Schwerpunkten" /></center>
+
+Die Centerroids sollen auf den vier Seite des ROIs Rechtecks liegen. Linien werden aus dem Vier Centerriods gezeichnet. Die Schnittpunkten der Linien entsprechend die Eckpunkten des ROIs und werden als Output ausgegeben. 
+<center><img src="resources/berechnetes%20ROI.PNG" alt="berechnetes ROI" /></center>
+
    * Jan
 Vergleich der Verschiedenen Methoden für die Hintergrundsegmentierung. Hier wurden die Verschiedenen Umsetzungen von dem OpenCV internen BackgroundSubtractor getestet, MOG2, KNN, CNT und GMG. Die Verschiedenen Umsetzungen lieferten gemischte Ergebnisse, da gelegentlich der Output flackerte oder wenn Autos über lägere Zeit still standen diese als Hintergrund klassifiziert wurden und somit aus der Ausgabe verschwanden. Dies hat den Hintergrund, dass die Umsetzungen des BackgroundSubtractor mit einer History arbeiten und hierbei jedem Pixel einen, auf Wahrscheinlichkeit über die Bildhistorie betrachtet, basierenden Wert zuweisen.
 <center><img src="resources/BackroundSub.png" alt="BackroundSub" /></center>
@@ -146,6 +171,25 @@ Für die Umsetzung mit Machine Learning wurde YoloV8 ausgewählt, da dieses verg
 
 
 ## 4. Evaluation
+
+Die Funktion extract_background() funktioniert unter der Annahme, dass das Video ausreichende Lang ist. Beim kurzen Videos, wo Autos lange am Ampel stehen, werden die Stehende Autos als Teil des Hintergrund erkannt.
+<center><img src="resources/Background_Problem.png" alt="Einschränkung Hintergrund Erkennung" /></center>
+
+Die Funktion find_Stats_point() bietet unter beschränkten bedingungen relative gute Ergebnisse. Die Schwächen der Funktion resultieren aus der berechneten Maske zu Identifizierung der still stehenden Autos. Die Schwächen sind:
+•	Fußgänger werden manchmal als Objekte identifiziert. Das passiert hauptsächlich, wenn ein Person an der Ampel, die am nächsten zu der Kamera ist, steht. Die erkannte Contour Fläche der Person ist größer als den definierten Threshold und das Person wird von dem Programm erfasst.
+<center><img src="resources/Fussgaenger_problem.PNG" alt="Einschränkung Fußgänger" /></center>
+•	Staus, die nicht an der Ampel vorkommen, werden auch von der Maske erfasst. Das kann wie bei dem vorherigen Punkt zur Verschiebung des ROIs führen
+ 
+•	Störungen von der Umgebung beispielweise, vom Wind (Kamerawackeln) oder von der Sonne (Änderung im Tageslicht). Die Störung verursachen Unterschiede zum Hintergrund Bild, was später von der Maske erfasst werden.
+ <center><img src="resources/Einschränkung_Umgebung.PNG" alt="Einschränkung durch Tageslicht" /></center>
+•	Meherere nebeneinander stehende Autos werden als ein Objekt erkannt. Das ist aber für die Berechnung des ROIs nicht relevant, da die Position der Punkten hauptsächlich für die Berechnung benötigt wird. 
+
+•	Fahrzeuge werden manchmal als meherere Objekte erkannt werden. Der Grund dafür lässt sich allerdings nicht erklären.
+ 
+•	Manche Fahrzeuge, die hinter einem Objekt in dem Hintergrund stehen, werden nicht erkannt. Da die Contour Fläche wird durch den Hintergrund Objekt verdeckt. Das führt dazu, dass die übrig gebliebene Fläche nicht größer als den Threshold ist und das Objekt nicht erkannt wird.
+ <center><img src="resources/Einschraenkung_verdeckt.PNG" alt="Einschränkung durch Hintergrund Objekte" /></center>
+
+Der hauptsächliche Grund für die Schwächen lässt sich einfach durch die verwendete Methodik erklären. Der Methodik analysiert die Bewegungen in dem Frame und es wird nicht identifiziert, ob der Bewegung aus einem Auto oder anderen Objekt im Frame sind. Um die Schwächen zu beheben bzw. verringern soll zuerst eine Methodik zur akkuraten Identifizierung den Fahrzeugen erzeugt werden, Biespielweise mithilfe von Machine Learning. Und dazu auch die Bewegungsanalyse. Das ROI kann auch direkt mit anderen Machine Learnig algorithmus bestimmt werden, in dem das Algorithmus direkt den Ampelkreuzungsberich identifiziert.
 
 Das Erfassen der Fahrzeuge mithilfe von OpenCV funktioniert unter der Annahme, dass die Objekte von der Maske fehlerfrei erkannt werden. Es wurden zwei Methoden für das Erstellen der Maske verwendet. Mit beiden Masken können die Objekte erfasst werden, sodass einzelne, einfache Fahrzeuge fehlerfrei detektiert werden (siehe Abbildung A). Letztendlich wurde sich aber für Methode 2 entschieden,da bei dieser weniger Fahrzeuge falsch erkannt wurden. Unter Zuhilfenahme der Funktion *point_inside_polygon()* können Fehlerkennungen, die bei komplexeren Fahrzeugen auftreten (siehe Abbildung B) eliminiert werden. Probleme treten vor allem bei der Erkennung von Fahrzeugen, die durch andere Fahrzeuge verdeckt werden, auf (siehe Abbildung C). <center><img src="resources/Evaluation_Noah.png" alt="Evaluation_Noah" /></center>
 Die Wegverfolgung der Fahrzeuge mit der Funktion *dist_to_line()* funktioniert ebenfalls unter der Annahme, dass die Fahrzeuge fehlerfrei erkannt werden. Dies ist in den meisten Fällen aber nur bei einzelnen, unverdeckten Fahrzeugen der Fall. Wenn dem Fahrzeug einmal eine neue ID aufgrund des Objektverlusts durch Fehler in der Maske zugewiesen wurde, wird die zweite Linienüberquerung, also die Ausfahrt, als erste Überquerung erkannt. Vermeiden lässt sich dies nur, indem das Fahrzeug über den gesamten Verlauf erkannt wird.
