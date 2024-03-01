@@ -9,19 +9,19 @@ def anzahlFahrzeugeProRichtung(input_array):
     for array in input_array:
         if array[1] == 1:
             Richtung1_ein += 1
-        if array[1] == 2:
+        elif array[1] == 2:
             Richtung2_ein += 1
-        if array[1] == 3:
+        elif array[1] == 3:
             Richtung3_ein += 1
-        if array[1] == 4:
+        elif array[1] == 4:
             Richtung4_ein += 1
         if array[2] == 1:
             Richtung1_aus += 1
-        if array[2] == 2:
+        elif array[2] == 2:
             Richtung2_aus += 1
-        if array[2] == 3:
+        elif array[2] == 3:
             Richtung3_aus += 1
-        if array[2] == 4:
+        elif array[2] == 4:
             Richtung4_aus += 1
         
     # Zusammenstellen der Gesamtanzahl pro Richtung (Einfahrt und Ausfahrt) in eine Liste
