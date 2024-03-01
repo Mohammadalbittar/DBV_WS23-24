@@ -216,8 +216,8 @@ def main():
 
 
     # Daten auswerten
-    anzahlFahrzeugeProRichtung(ot.car_in_out)
-    anzahlFahrzeugeProMinute(elapsed_time, len(ot.car_in_out), ins)
+    #anzahlFahrzeugeProRichtung(ot.car_in_out)
+    #anzahlFahrzeugeProMinute(elapsed_time, len(ot.car_in_out), ins)
 
 # Main
 if __name__ == "__main__":
