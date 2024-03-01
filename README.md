@@ -186,12 +186,10 @@ Die Implementierung von Yolo hatte auch einige Schwächen, so wurden beispielwei
 <center><img src="resources/Yolo Fehler.png" alt="Yolo Fehler" /></center>
 
 
-
-
 -  Getestet wurden mehrere Videos die über Youtube-Links oder als MP4 an das Programm übergeben wurden. Da die Installation der für Youtube Video notwendigen Bibliothek teilweise Probleme auftraten, haben wir uns dazu entschieden nur MP4-Videos als Material zu verwenden.
    -  <u>Beispiellinks:</u>
       -  https://www.youtube.com/watch?v=2X27I6BAJcI
-   
+
 -  Hiermit sollte verdeutlich werden welche Stärken und Schwächen klassische Ansätze und derzeitige Machine Learning Ansätze haben
    -  <u>Klassisch:</u>
       -  Stärken: 
@@ -214,20 +212,18 @@ Die Implementierung von Yolo hatte auch einige Schwächen, so wurden beispielwei
       -  Hiefür wurden zwei Videos verglichen, eines mit einer bewölkten Umgebung und eines mit direkter Sonneneinstrahlung und resultierendem Schattenwurf
       -  OpenCV und ML könnten sich gegenseitig Ergänzen, sodass YoloV8 z.B. die Boundingbox bei teilweise Verdeckung nicht verliert und die klassifizierte Instanz erhalten bleibt
       -  ML Ansätze sind deutlich flexibler und können ohne größere Anpassungen universeller eingesetzt werden, bei OpenCV wäre eine zusätzliche Kontrolle und parametrierung notwenig
-   
+
 -  <u>Laufzeit:
-   
+
    -  Macbook Pro M1 (links Test 1, rechts Test 2)
-   
+
       <img src="user_results/graph_MBPro_Test1.png" width="425"/> <img src="user_results/graph_MBPro_Test2.png" width="425"/> 
-   
+
    -  Ryzen 3600x with RTX4070 (links Test 1, rechts Test 2)
-   
+
       <img src="user_results/graph_RTX4070_Test1.png" width="425"/> <img src="user_results/graph_RTX4070_Test2.png" width="425"/> 
-   
-   
 
-
+   -  Weitere Ergebnisse unserer Arbeit sind in dem Ordner user_results zu finden. Hierbei kann jeder Nutzer sich auch selber Ergebnisse generieren um die Performance auf dem zu untersuchenden Endgerät zu testen
 
 * <u>Was hätte wie besser sein können?</u>: 
    * Differenzierung von bewegten Objekten durch ergänzung des mit Lukas Kanade Dense Optical Flow, um über Skalarfelder eventuell die Objekte zu differenzieren
