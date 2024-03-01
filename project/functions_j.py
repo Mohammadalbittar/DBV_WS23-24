@@ -48,27 +48,6 @@ def get_livestream(url:str):
     cap = cv.VideoCapture(stream.url)
     return cap
 
-# def lukas_kanade(first_image):
-#     prvs = cv.cvtColor(first_image, cv.COLOR_BGR2GRAY)
-#     hsv = np.zeros_like(prvs)
-#     hsv[..., 1] = 255
-#     def lukas_kanade2(frame):     # Anpassen an neue Inputs
-#         nonlocal prvs
-#         nonlocal hsv
-#
-#         next = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
-#         flow = cv.calcOpticalFlowFarneback(prvs, next, None, 0.7, 4, 15, 3, 8, 1.2, 0)
-#         mag, ang = cv.cartToPolar(flow[..., 0], flow[..., 1])
-#         hsv[..., 0] = ang*180/np.pi/2
-#         hsv[..., 2] = cv.normalize(mag, None, 0, 255, cv.NORM_MINMAX)
-#         bgr = cv.cvtColor(hsv, cv.COLOR_HSV2BGR)
-#         bgr = cv.addWeighted(bgr, 0.8, frame, 0.5, gamma=0)
-#
-#         prvs = next
-#         return bgr
-#
-#     return lukas_kanade2
-
 
 def dense_optical_flow_outer(initial_frame):
     """
