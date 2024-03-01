@@ -1,8 +1,10 @@
+import cv2
+
 from project.GUI2 import *
 from project.functions_n import *
 from project.functions_j import *
 from project.Plotten import *
-
+from project.functions_m import *
 
 
 def main():
@@ -15,8 +17,8 @@ def main():
     path = r'resources/video2.mp4'  # Videopfad
     change_roi = False
 
-
-
+    #Automatically calculate ROI
+    cal_roi = True
 
     ######## Initial Analysis ########
     cap = cv.VideoCapture(path)
@@ -25,7 +27,19 @@ def main():
     height = int(cap.get(cv.CAP_PROP_FRAME_HEIGHT))
     length = int(cap.get(cv.CAP_PROP_FRAME_COUNT))
     _, frame_one = cap.read()
+
+
+    background_image = extract_background(cap,500)
+    #cv.imshow("Background",background_image)
+    #cv.waitKey(0)
+    if cal_roi:
+        #points_stat = find_Stats_point(cap,background_image)
+        points = np.load("Points_Stationary.npy")
+        print(points)
+        intersections = find_rois_points(background_image,points)
+
     '''
+    #Meine Funktion adden
     while True:
         run, frame = cap.read()
         if not run:
@@ -60,7 +74,7 @@ def main():
     yolo_regio = yolo_region_count([(460, 370), (520, 520), (1150, 460), (940, 345)])
 
     ######## Anwendungsteil ########
-    #cap = cv.VideoCapture(path)
+    cap = cv.VideoCapture(path)
     start_time = time.time()  # Startzeit des Videos
     width = int(cap.get(cv.CAP_PROP_FRAME_WIDTH))
     height = int(cap.get(cv.CAP_PROP_FRAME_HEIGHT))
@@ -148,3 +162,4 @@ if __name__ == "__main__":
     #root = tk.Tk()
     #gui = GUI(root)
     #root.mainloop()
+
