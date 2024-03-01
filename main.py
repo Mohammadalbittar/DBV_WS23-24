@@ -7,10 +7,11 @@ from project.Plotten import *
 from project.functions_m import *
 import time
 import matplotlib.pyplot as plt
+import argparse
 
 
 
-def main():
+def main(uuser_title:str, Live_testing:bool):
     ######## Video Material ########
 
     path = r'resources/video2.mp4'  # Videopfad
@@ -33,9 +34,11 @@ def main():
     _, frame_one = cap.read()
 
     ######## Initialisierung Video Speichern als MP4########
-    write_video = False
-    user_title = "M1MacPro_16Gb"
+    write_video = Live_testing  # Wenn True, wird das Video gespeichert
+    output_video_time = 60 # in Sekunden
+    user_title = uuser_title # Titel des Videos
     if write_video:
+        print('Video Output turned on')
         if user_title:
             timestamp = user_title
         else:
@@ -48,7 +51,7 @@ def main():
         fourcc = cv.VideoWriter_fourcc(*'H264')
         out_cv_vid = cv.VideoWriter(write_video_path, fourcc, fps_write, (width_write, height_write*2))
         times_stat = [[], []]
-        max_time = 10*fps_write
+        max_time = output_video_time*fps_write
         current_frame = 0
 
     ######## Objecttracking ########
@@ -170,7 +173,7 @@ def main():
         frame = video_tiling_mixed(frame, frame_yolo, width, height)
 
 
-        cv.imshow('Frame', frame)
+        #cv.imshow('Frame', frame)
         #cv.imshow('Maske', e_img)
         #cv.imshow('Region of Interest', roi)
         #cv.imshow('Frame', frame)
@@ -221,7 +224,10 @@ def main():
 
 # Main
 if __name__ == "__main__":
-    main()
-    #root = tk.Tk()
-    #gui = GUI(root)
-    #root.mainloop()
+    parser = argparse.ArgumentParser(description="Description of your script.")
+    parser.add_argument("param_str", type=str, help="Description of the string parameter")
+    parser.add_argument("param_bool", type=bool, help="Description of the boolean parameter")
+
+    args = parser.parse_args()
+
+    main(args.param_str, args.param_bool)
