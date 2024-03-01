@@ -48,7 +48,7 @@ def main(uuser_title:str, Live_testing:bool):
         width_write = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
         height_write = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
         fps_write = cap.get(cv2.CAP_PROP_FPS)
-        fourcc = cv.VideoWriter_fourcc(*'MP4V')
+        fourcc = cv.VideoWriter_fourcc(*'mp4v')
         out_cv_vid = cv.VideoWriter(write_video_path, fourcc, fps_write, (width_write, height_write*2))
         times_stat = [[], []]
         max_time = output_video_time*fps_write
