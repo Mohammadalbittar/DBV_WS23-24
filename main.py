@@ -5,6 +5,8 @@ from project.functions_n import *
 from project.functions_j import *
 from project.Plotten import *
 from project.functions_m import *
+import time
+
 
 
 def main():
@@ -39,7 +41,6 @@ def main():
         intersections = find_rois_points(background_image,points)
 
     '''
-    #Meine Funktion adden
     while True:
         run, frame = cap.read()
         if not run:
@@ -86,6 +87,9 @@ def main():
         frame_y = frame.copy()
         roi = frame[ot.roi[1]:ot.roi[3], ot.roi[0]: ot.roi[2]] # Region_of_interest Format: y1, y2 : x1, x2
 
+        ## 1. Zeitmessung Anfang
+        start_time = time.time()*1000
+
         #Erstellen der Maske
         fgmask = fgbg.apply(roi)    # Vordergrund vom Hintergrund trennen
         ret, imBin = cv.threshold(fgmask, 254, 255, cv.THRESH_BINARY)   # Binäre Maske erstellen
@@ -125,9 +129,17 @@ def main():
         cv.line(frame, (ot.crossing_lines[2][0], ot.crossing_lines[2][1]), (ot.crossing_lines[2][2], ot.crossing_lines[2][3]), (0, 0, 255), 2)  # rechts
         cv.line(frame, (ot.crossing_lines[3][0], ot.crossing_lines[3][1]), (ot.crossing_lines[3][2], ot.crossing_lines[3][3]), (0, 0, 255), 2)  # oben
 
-        ###### YOLO ######
+        end_time = time.time()*1000  # Endzeit der Zeitmessung
+        elapsed_time = end_time - start_time  # Dauer, die die Bildverarbeitung benötigt hat
+        frame = add_text_to_frame(frame, f'{elapsed_time:.2f} ms')
 
+
+        ###### YOLO ######
+        start_time = time.time() *1000 # Startzeit der Zeitmessung
         frame_yolo, ins, out = yolo_regio(frame_y)
+        end_time = time.time()*1000  # Endzeit der Zeitmessung
+        elapsed_time = end_time - start_time
+        frame_yolo = add_text_to_frame(frame_yolo, f'{elapsed_time:.2f} ms')
 
 
 
@@ -154,7 +166,7 @@ def main():
 
     # Daten auswerten
     anzahlFahrzeugeProRichtung(ot.car_in_out)
-    anzahlFahrzeugeProMinute(elapsed_time, len(ot.car_in_out), 0)
+    anzahlFahrzeugeProMinute(elapsed_time, len(ot.car_in_out), ins)
 
 # Main
 if __name__ == "__main__":
@@ -162,4 +174,3 @@ if __name__ == "__main__":
     #root = tk.Tk()
     #gui = GUI(root)
     #root.mainloop()
-
