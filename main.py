@@ -1,4 +1,4 @@
-import cv2
+import cv2 as cv
 
 from project.GUI2 import *
 from project.functions_n import *
@@ -6,6 +6,7 @@ from project.functions_j import *
 from project.Plotten import *
 from project.functions_m import *
 import time
+import matplotlib.pyplot as plt
 
 
 
@@ -14,6 +15,9 @@ def main():
 
     path = r'resources/video2.mp4'  # Videopfad
     url = 'https://www.youtube.com/watch?v=2X27I6BAJcI'  # URL für Testvideo
+
+
+
 
     ######## Initialisierung ########
     change_roi = False  # Wenn True, kann die roi mit der Funktion ot.set_roi angepasst werden
@@ -28,6 +32,26 @@ def main():
     length = int(cap.get(cv.CAP_PROP_FRAME_COUNT))
     _, frame_one = cap.read()
 
+    ######## Initialisierung Video Speichern als MP4########
+    write_video = False
+    user_title = "M1MacPro_16Gb"
+    if write_video:
+        if user_title:
+            timestamp = user_title
+        else:
+            timestamp = time.strftime("%Y%m%d-%H%M%S")
+
+        write_video_path = f'resources/output{timestamp}.mp4'
+        width_write = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+        height_write = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        fps_write = cap.get(cv2.CAP_PROP_FPS)
+        fourcc = cv.VideoWriter_fourcc(*'H264')
+        out_cv_vid = cv.VideoWriter(write_video_path, fourcc, fps_write, (width_write, height_write*2))
+        times_stat = [[], []]
+        max_time = 10*fps_write
+        current_frame = 0
+
+    ######## Objecttracking ########
     ot = Objecttracking()    # ot als Objekt der Klasse Objecttracking definiert
 
     if change_roi:  # Wenn True, kann die roi mit der Funktion ot.set_roi angepasst werden
@@ -129,6 +153,8 @@ def main():
 
         end_time_cv = time.time()*1000  # Endzeit der Zeitmessung
         elapsed_time_cv = end_time_cv - start_time_cv # Dauer, die die Bildverarbeitung benötigt hat
+        if write_video:
+            times_stat[0].append(elapsed_time_cv)
         frame = add_text_to_frame(frame, f'{elapsed_time_cv:.2f} ms/frame')
 
         ###### YOLO ######
@@ -136,10 +162,13 @@ def main():
         frame_yolo, ins, out = yolo_regio(frame_y)
         end_time_yolo = time.time()*1000  # Endzeit der Zeitmessung
         elapsed_time_yolo = end_time_yolo - start_time_yolo
+        if write_video:
+            times_stat[1].append(elapsed_time_yolo)
         frame_yolo = add_text_to_frame(frame_yolo, f'{elapsed_time_yolo:.2f} ms/frame')
 
         ##### Ausgabe von Bildern #####
         frame = video_tiling_mixed(frame, frame_yolo, width, height)
+
 
         cv.imshow('Frame', frame)
         #cv.imshow('Maske', e_img)
@@ -151,12 +180,39 @@ def main():
         if key == 27:   # Durch Drücken der ESC-Taste wird das Programm geschlossen
             break
 
+        if write_video:
+            frame = cv.resize(frame, (width_write, height_write*2))
+            out_cv_vid.write(frame)  # Schreibt das Bild in das Video
+            current_frame +=1
+            print(current_frame, '/', max_time)
+            if max_time == current_frame:
+                break
+
+
     cap.release()
     cv.destroyAllWindows()
 
     end_time = time.time()  # Endzeit des Videos
     elapsed_time = end_time - start_time  # Dauer, die das Video abgespielt wurde
 
+
+    ###### Zeitmessung Graph Speichern######
+    if write_video:
+        x_values = range(1, len(times_stat[0])+1)
+        plt.plot(x_values, times_stat[0], label='OpenCV')
+        plt.plot(x_values, times_stat[1], label='YOLO')
+        plt.ylim(0, 150)
+        plt.grid()
+        plt.xlabel('Frame')
+        plt.ylabel('Time [ms]')
+        plt.legend()
+        if user_title:
+            graph_output_title = f'resources/graph_{user_title}.png'
+        else:
+            graph_output_title = f'resources/graph_{timestamp}.png'
+        plt.savefig(graph_output_title)
+        out_cv_vid.release()
+        print(f'Video saved as {write_video_path}')
 
 
     # Daten auswerten
