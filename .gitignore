@@ -1,3 +1,10 @@
+.gitignore
+ssh_key_DBV
+ssh_key_DBV.pub
+init_script.sh
+ME_FIRST.bat
+.idea/
+
 # Datei-Typen
 *.avi
 *.pt
