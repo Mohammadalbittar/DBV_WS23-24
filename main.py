@@ -16,19 +16,6 @@ def main():
     path = r'resources/video2.mp4'  # Videopfad
     url = 'https://www.youtube.com/watch?v=2X27I6BAJcI'  # URL für Testvideo
 
-    ######## Initialisierung Video Speichern als MP4########
-    write_video = True
-    user_title = "M1MacPro_16Gb"
-    if write_video:
-        if user_title:
-            timestamp = user_title
-        else:
-            timestamp = time.strftime("%Y%m%d-%H%M%S")
-
-        write_video_path = f'resources/output{timestamp}.mp4'
-        fourcc = cv.VideoWriter_fourcc(*'mp4v')
-        out_cv_vid = cv.VideoWriter(write_video_path, fourcc, 30.0, (1920, 1080))
-        times_stat = [[], []]
 
 
 
@@ -45,6 +32,26 @@ def main():
     length = int(cap.get(cv.CAP_PROP_FRAME_COUNT))
     _, frame_one = cap.read()
 
+    ######## Initialisierung Video Speichern als MP4########
+    write_video = False
+    user_title = "M1MacPro_16Gb"
+    if write_video:
+        if user_title:
+            timestamp = user_title
+        else:
+            timestamp = time.strftime("%Y%m%d-%H%M%S")
+
+        write_video_path = f'resources/output{timestamp}.mp4'
+        width_write = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+        height_write = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        fps_write = cap.get(cv2.CAP_PROP_FPS)
+        fourcc = cv.VideoWriter_fourcc(*'H264')
+        out_cv_vid = cv.VideoWriter(write_video_path, fourcc, fps_write, (width_write, height_write*2))
+        times_stat = [[], []]
+        max_time = 10*fps_write
+        current_frame = 0
+
+    ######## Objecttracking ########
     ot = Objecttracking()    # ot als Objekt der Klasse Objecttracking definiert
 
     if change_roi:  # Wenn True, kann die roi mit der Funktion ot.set_roi angepasst werden
@@ -162,8 +169,7 @@ def main():
         ##### Ausgabe von Bildern #####
         frame = video_tiling_mixed(frame, frame_yolo, width, height)
 
-        if write_video:
-            out_cv_vid.write(frame)  # Schreibt das Bild in das Video
+
         cv.imshow('Frame', frame)
         #cv.imshow('Maske', e_img)
         #cv.imshow('Region of Interest', roi)
@@ -173,6 +179,15 @@ def main():
         key = cv.waitKey(30)
         if key == 27:   # Durch Drücken der ESC-Taste wird das Programm geschlossen
             break
+
+        if write_video:
+            frame = cv.resize(frame, (width_write, height_write*2))
+            out_cv_vid.write(frame)  # Schreibt das Bild in das Video
+            current_frame +=1
+            print(current_frame, '/', max_time)
+            if max_time == current_frame:
+                break
+
 
     cap.release()
     cv.destroyAllWindows()
@@ -197,6 +212,7 @@ def main():
             graph_output_title = f'resources/graph_{timestamp}.png'
         plt.savefig(graph_output_title)
         out_cv_vid.release()
+        print(f'Video saved as {write_video_path}')
 
 
     # Daten auswerten
