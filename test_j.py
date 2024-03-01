@@ -77,7 +77,7 @@ def main():
         if cv.waitKey(1) & 0xFF == ord('q'):
             break
 
-        str = "Lukas_Kanade"
+        str = "Lukas_Kanade_1"
         cv.imwrite(f'resources/{str}.png', frame7)
         k +=1
 
