@@ -1,5 +1,5 @@
 ## Formulierung des Vorgehens
-
+kleine Änderung
 Vergleich der Verschiedenen Methoden für die Hintergrundsegmentierung. Hier wurden die Verschiedenen Umsetzungen von dem OpenCV internen BackgroundSubtractor getestet, MOG2, KNN, CNT und GMG.
 
 
