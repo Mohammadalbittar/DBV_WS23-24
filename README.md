@@ -175,12 +175,17 @@ Das Erfassen der Fahrzeuge mithilfe von OpenCV funktioniert unter der Annahme, d
 <center><img src="resources/Evaluation_Noah.png" alt="Evaluation_Noah" /></center>
 
 Die Wegverfolgung der Fahrzeuge mit der Funktion *dist_to_line()* funktioniert ebenfalls unter der Annahme, dass die Fahrzeuge fehlerfrei erkannt werden. Dies ist in den meisten Fällen aber nur bei einzelnen, unverdeckten Fahrzeugen der Fall. Wenn dem Fahrzeug einmal eine neue ID aufgrund des Objektverlusts durch Fehler in der Maske zugewiesen wurde, wird die zweite Linienüberquerung, also die Ausfahrt, als erste Überquerung erkannt. Vermeiden lässt sich dies nur, indem das Fahrzeug über den gesamten Verlauf erkannt wird.
-Dem zuvor beschrieben Objektverlust wirkt die Funktion *point_inside_polygon()* wie bereits beschrieben entgegen. Allerdings kann diese auch dazu führen, dass ein innerhalb der Kreuzung verdecktes Fahrzeug anschließend nicht mehr neu erkannt wird oder zwei erst in der Kreuzung neu erkannte Fahrzeuge dieselbe ID erhalten (siehe 2Autos_1ID). **dense optical flow usw**
+Dem zuvor beschrieben Objektverlust wirkt die Funktion *point_inside_polygon()* wie bereits beschrieben entgegen. Allerdings kann diese auch dazu führen, dass ein innerhalb der Kreuzung verdecktes Fahrzeug anschließend nicht mehr neu erkannt wird oder zwei erst in der Kreuzung neu erkannte Fahrzeuge dieselbe ID erhalten (siehe 2Autos_1ID). 
 
 <center><img src="resources/2Autos_1ID.png" alt="2Autos_1ID" /></center>
 
+Insgesamt kann die Objekterkennung mit OpenCV unter der Voraussetzung eindeutig erkannter Objekte den Verkehrsfluss der Kreuzung besser als die Objekterkennung mit YOLO
 
-(Insgesamt kann die Objekterkennung mit OpenCV unter der Voraussetzung eindeutig erkannter Objekte den Verkehrsfluss der Kreuzung besser als die Objekterkennung mit YOLO)
+Die Implementierung von Yolo hatte auch einige Schwächen, so wurden beispielweise Objekte die sich gegenseitig verdeckt haben nicht mehr erkannt und die erkannte Instanz ging verloren und wurde danach als neue Insanz erkannt. Auch wurden anfänglich stillstehende Objekte nicht erkannt, Gründe hierfür könnten sein, dass die Encoder Schicht der Yolo Implementierung teilweise auf Bewegungen im Bild basiert. Um diese Fehler zu vermeiden hätte man ein besser trainiertes Modell benutzen können. Beispiele hierfür sind in den folgenden Bildern kenntlich gemacht. In Bild a) und b) kann man sehen , dass Objekte die sich seit Beginn des Videos nicht bewegt haben, auch nicht erkannt werden. In den Bildern c) und d) kann man erkennen sich durch die Überlappung von Objekten eine Instanz in zwei Instanzen teilt, wodurch auch die Verkehrsanalyse basierend auf der Anzahl der Instanzen in der Kreuzung fehlerhaft wird. 
+
+<center><img src="resources/Yolo Fehler.png" alt="Yolo Fehler" /></center>
+
+
 
 
 -  Getestet wurden mehrere Videos die über Youtube-Links oder als MP4 an das Programm übergeben wurden. Da die Installation der für Youtube Video notwendigen Bibliothek teilweise Probleme auftraten, haben wir uns dazu entschieden nur MP4-Videos als Material zu verwenden.
