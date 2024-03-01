@@ -4,7 +4,7 @@ import cv2 as cv
 
 
 
-path = "video/traffic.mp4"
+path = "user_results/Zwischenergbnisse/traffic.mp4"
 url = 'https://www.youtube.com/watch?v=2X27I6BAJcI'
 def main():
     #lukas_kanade(path)

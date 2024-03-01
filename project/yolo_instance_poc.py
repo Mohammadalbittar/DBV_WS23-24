@@ -10,10 +10,10 @@ track_history = defaultdict(lambda: [])
 model = YOLO("yolov8n-seg.pt")   # segmentation model
 names = model.model.names
 
-cap = cv.VideoCapture("../video/traffic.mp4")
+cap = cv.VideoCapture("../user_results/Zwischenergbnisse/traffic.mp4")
 w, h, fps = (int(cap.get(x)) for x in (cv.CAP_PROP_FRAME_WIDTH, cv.CAP_PROP_FRAME_HEIGHT, cv.CAP_PROP_FPS))
 
-out = cv.VideoWriter('../video/instance-segmentation-object-tracking.avi', cv.VideoWriter_fourcc(*'MJPG'), fps, (w, h))
+out = cv.VideoWriter('../user_results/Zwischenergbnisse/instance-segmentation-object-tracking.avi', cv.VideoWriter_fourcc(*'MJPG'), fps, (w, h))
 
 
 # Init speed-estimation obj
