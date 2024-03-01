@@ -221,7 +221,7 @@ def main(uuser_title:str, path_to_file:str,  Live_testing:bool, user_live_output
     # Daten auswerten
     anzahlFahrzeugeProRichtung(ot.car_in_out)
     anzahlFahrzeugeProMinute(elapsed_time, len(ot.car_in_out), ins)
-'''
+
 # Main
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Description of your script.")
