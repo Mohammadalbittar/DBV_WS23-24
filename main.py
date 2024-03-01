@@ -7,10 +7,11 @@ from project.Plotten import *
 from project.functions_m import *
 import time
 import matplotlib.pyplot as plt
+import argparse
 
 
 
-def main():
+def main(uuser_title:str, path_to_file:str,  Live_testing:bool, user_live_output:bool, analysis_time:int):
     ######## Video Material ########
 
     path = r'resources/video2.mp4'  # Videopfad
@@ -21,7 +22,7 @@ def main():
 
     ######## Initialisierung ########
     change_roi = False  # Wenn True, kann die roi mit der Funktion ot.set_roi angepasst werden
-    auto_calc_roi = True  # Wenn True, wird die ROI automatisch berechnet
+    auto_calc_roi = False  # Wenn True, wird die ROI automatisch berechnet
     # Wenn beide False, Standardwerte aus ot.roi[] verwendet
 
     ######## Initial Analysis ########
@@ -33,22 +34,24 @@ def main():
     _, frame_one = cap.read()
 
     ######## Initialisierung Video Speichern als MP4########
-    write_video = False
-    user_title = "M1MacPro_16Gb"
+    write_video = Live_testing  # Wenn True, wird das Video gespeichert
+    output_video_time = analysis_time # Wieviele Sekunden des Videos sollen analysiert werden
+    user_title = uuser_title # Titel des Videos
     if write_video:
+        print('Video Output turned on')
         if user_title:
             timestamp = user_title
         else:
             timestamp = time.strftime("%Y%m%d-%H%M%S")
 
-        write_video_path = f'resources/output{timestamp}.mp4'
+        write_video_path = f'user_results/output_{timestamp}.mp4'
         width_write = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
         height_write = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
         fps_write = cap.get(cv2.CAP_PROP_FPS)
-        fourcc = cv.VideoWriter_fourcc(*'H264')
+        fourcc = cv.VideoWriter_fourcc(*'mp4v')
         out_cv_vid = cv.VideoWriter(write_video_path, fourcc, fps_write, (width_write, height_write*2))
         times_stat = [[], []]
-        max_time = 10*fps_write
+        max_time = output_video_time*fps_write
         current_frame = 0
 
     ######## Objecttracking ########
@@ -69,7 +72,7 @@ def main():
         # Berechne ROI
         # Finde stationäre Punkte
         start_time_roi = time.time()*1000
-        points_stat, used_frames_Stat = find_Stats_point(cap,background_image,34,1000)
+        points_stat, used_frames_Stat = find_Stats_point(cap,background_image)
         #points = np.load("Points_Stationary.npy")
         #print(points)
 
@@ -79,7 +82,7 @@ def main():
         elapsed_time_roi = end_time_roi - start_time_roi
         print(roi_eckpunkten)
 
-    '''
+
     #Kernals für die Maske
     fgbg = cv.createBackgroundSubtractorMOG2(detectShadows=True)
     kernal_Op = np.ones((3,3),np.uint8)  # Öffnung
@@ -169,8 +172,8 @@ def main():
         ##### Ausgabe von Bildern #####
         frame = video_tiling_mixed(frame, frame_yolo, width, height)
 
-
-        cv.imshow('Frame', frame)
+        if user_live_output:
+            cv.imshow('Frame', frame)
         #cv.imshow('Maske', e_img)
         #cv.imshow('Region of Interest', roi)
         #cv.imshow('Frame', frame)
@@ -207,9 +210,9 @@ def main():
         plt.ylabel('Time [ms]')
         plt.legend()
         if user_title:
-            graph_output_title = f'resources/graph_{user_title}.png'
+            graph_output_title = f'user_results/graph_{user_title}.png'
         else:
-            graph_output_title = f'resources/graph_{timestamp}.png'
+            graph_output_title = f'user_results/graph_{timestamp}.png'
         plt.savefig(graph_output_title)
         out_cv_vid.release()
         print(f'Video saved as {write_video_path}')
@@ -218,10 +221,18 @@ def main():
     # Daten auswerten
     anzahlFahrzeugeProRichtung(ot.car_in_out)
     anzahlFahrzeugeProMinute(elapsed_time, len(ot.car_in_out), ins)
-'''
+
 # Main
 if __name__ == "__main__":
-    main()
-    #root = tk.Tk()
-    #gui = GUI(root)
-    #root.mainloop()
+    parser = argparse.ArgumentParser(description="Description of your script.")
+    parser.add_argument("param_str1", type=str, help="Name of User Output")
+    parser.add_argument("param_str2", type=str, help="path to video file")
+    parser.add_argument("param_bool1", type=lambda x: x.lower() == 'true',
+                        help="Output ('True' or 'False')")
+    parser.add_argument("param_bool2", type=lambda x: x.lower() == 'true',
+                        help="Live View ('True' or 'False')")
+    parser.add_argument("param_int", type=int, help="how many seconds of video to analyse")
+
+    args = parser.parse_args()
+
+    main(args.param_str1, args.param_str2, args.param_bool1, args.param_bool2, args.param_int)
