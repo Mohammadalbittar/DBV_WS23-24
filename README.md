@@ -216,7 +216,7 @@ Dem zuvor beschrieben Objektverlust wirkt die Funktion *point_inside_polygon()* 
    
       <img src="user_results/graph_MBPro_Test1.png" width="425"/> <img src="user_results/graph_MBPro_Test2.png" width="425"/> 
    
-   -  Machine Learning FPS (links Test 1, rechts Test 2)
+   -  Ryzen 3600x with RTX4070 (links Test 1, rechts Test 2)
    
       <img src="user_results/graph_RTX4070_Test1.png" width="425"/> <img src="user_results/graph_RTX4070_Test2.png" width="425"/> 
    
