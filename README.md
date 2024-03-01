@@ -287,7 +287,7 @@ python main.py "" 'resources/video2.mp4' False True 0
 
 ## Ergebnis Video Link 
 
-Das Erklärungsvideo ist in dem Ordner user_results zu finden, aber auch auf google-drive und youtube unter den folgenden Links verfügbar
+Das Erklärungsvideo ist in dem Ordner user_results () zu finden, aber auch auf google-drive und youtube unter den folgenden Links verfügbar
 
 ```
 https://drive.google.com/drive/folders/1oj64TH0qNlh3y8DgVZZC_jRUDCNw7ZyY?usp=sharing
