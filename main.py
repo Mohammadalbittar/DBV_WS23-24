@@ -10,7 +10,6 @@ import matplotlib.pyplot as plt
 import argparse
 
 
-
 def main(uuser_title:str, path_to_file:str,  Live_testing:bool, user_live_output:bool, analysis_time:int):
     ######## Video Material ########
 
@@ -51,7 +50,7 @@ def main(uuser_title:str, path_to_file:str,  Live_testing:bool, user_live_output
         fourcc = cv.VideoWriter_fourcc(*'mp4v')
         out_cv_vid = cv.VideoWriter(write_video_path, fourcc, fps_write, (width_write, height_write*2))
         times_stat = [[], []]
-        max_time = output_video_time*fps_write
+        max_time = int(output_video_time*fps_write)
         current_frame = 0
 
     ######## Objecttracking ########
@@ -101,6 +100,8 @@ def main(uuser_title:str, path_to_file:str,  Live_testing:bool, user_live_output
 
     while True:
         ret, frame = cap.read() # Frame einlesen
+        if not ret:
+            break
         frame_y = frame.copy()
 
         if auto_calc_roi: # Übergibt die entscheidenden Punkte aus der automatischen ROI Berechnung an die roi für ot
@@ -236,4 +237,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     main(args.param_str1, args.param_str2, args.param_bool1, args.param_bool2, args.param_int)
-    #main('test', 'resources/test_video_3.mp4', False, False, 60)
+    #main('test', 'resources/test_video_3.mp4', False, True, 10)
