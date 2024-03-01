@@ -71,7 +71,7 @@ def main(uuser_title:str, path_to_file:str,  Live_testing:bool, user_live_output
         # Berechne ROI
         # Finde stationäre Punkte
         start_time_roi = time.time()*1000
-        points_stat, used_frames_Stat = find_Stats_point(cap,background_image)
+        points_stat, used_frames_Stat = find_Stats_point(cap,background_image,34,15000)
         #points = np.load("Points_Stationary.npy")
         #print(points)
 
@@ -79,7 +79,7 @@ def main(uuser_title:str, path_to_file:str,  Live_testing:bool, user_live_output
         roi_eckpunkten = find_rois_points(background_image,points_stat)
         end_time_roi = time.time()*1000
         elapsed_time_roi = end_time_roi - start_time_roi
-        print(roi_eckpunkten)
+        #print(roi_eckpunkten)
 
 
     #Kernals für die Maske
