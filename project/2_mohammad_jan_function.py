@@ -39,7 +39,6 @@ def process_video(video_path):
         cumulative_result += binary_image          # Kumulatives Ergebnis aktualisieren
         cumulative_result = cv2.dilate(cumulative_result, None, iterations=15)          # Dilatation des kumulativen Ergebnisses
         cumulative_result = cv2.erode(cumulative_result, None, iterations=15)          # Erosion des kumulativen Ergebnisses
-        
     return cumulative_result.astype(np.uint8)          # Rückgabe des kumulativen Ergebnisses als uint8-Array
 
 
