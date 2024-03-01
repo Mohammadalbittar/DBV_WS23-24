@@ -14,7 +14,7 @@ import argparse
 def main(uuser_title:str, path_to_file:str,  Live_testing:bool, user_live_output:bool, analysis_time:int):
     ######## Video Material ########
 
-    path = r'resources/video2.mp4'  # Videopfad
+    path = path_to_file  # Videopfad
     url = 'https://www.youtube.com/watch?v=2X27I6BAJcI'  # URL für Testvideo
 
 

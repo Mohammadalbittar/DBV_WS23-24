@@ -388,50 +388,51 @@ def add_text_to_frame(frame, text):
     cv.putText(result_frame, text, position, font, font_scale, color, thickness, cv.LINE_AA)
     return result_frame
 
-
-def hdbscan_clustering(image, min_cluster_size=5, min_samples=3):
-    """
-    Perform HDBSCAN clustering on an image.
-
-    Parameters:
-    - image: numpy.ndarray
-        The input image.
-    - min_cluster_size: int, optional
-        The minimum number of samples required for a cluster.
-    - min_samples: int, optional
-        The number of samples in a neighborhood for a point to be considered a core point.
-
-    Returns:
-    - result: numpy.ndarray
-        The input image with clusters overlayed.
-    """
-    print(f'Type: {type(image)} Shape: {image.shape} Dtype: {image.dtype}')
-
-    if len(image.shape) > 2:
-        image_gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
-        print('Image RGB to Gray in Function = hdbscan_clustering')
-    else:
-        image_gray = image
-
-    hdbscan_clusterer = hdbscan.HDBSCAN(min_cluster_size=min_cluster_size, min_samples=min_samples)
-
-    image_flat = image_gray.reshape(-1, 1)
-    cluster_labels = hdbscan_clusterer.fit_predict(image_flat)
-    cluster_labels = cluster_labels.reshape(image_gray.shape)
-
-    # Create a mask where each cluster is assigned a unique color
-    cluster_mask = np.zeros_like(image)
-    unique_labels = np.unique(cluster_labels)
-    for label in unique_labels:
-        if label == -1:  # Noise points
-            continue
-        cluster_mask[cluster_labels == label] = np.random.randint(0, 255, 3)
-
-    # Overlay the cluster mask on the original image
-    result = cv.addWeighted(image, 0.7, cluster_mask, 0.3, 0)
-
-    print(f'Type: {type(result)} Shape: {result.shape} Dtype: {result.dtype}')
-    return result
+##### HDBSCAN Libary kann unter Umständen zu Installationsschwierigkeiten, weswegen die Funktion auskommentiert ist und uafgrund
+##### der nichtverwendung nurnoch für die Arbeitshistorie erhalten bleibt.
+# def hdbscan_clustering(image, min_cluster_size=5, min_samples=3):
+#     """
+#     Perform HDBSCAN clustering on an image.
+#
+#     Parameters:
+#     - image: numpy.ndarray
+#         The input image.
+#     - min_cluster_size: int, optional
+#         The minimum number of samples required for a cluster.
+#     - min_samples: int, optional
+#         The number of samples in a neighborhood for a point to be considered a core point.
+#
+#     Returns:
+#     - result: numpy.ndarray
+#         The input image with clusters overlayed.
+#     """
+#     print(f'Type: {type(image)} Shape: {image.shape} Dtype: {image.dtype}')
+#
+#     if len(image.shape) > 2:
+#         image_gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
+#         print('Image RGB to Gray in Function = hdbscan_clustering')
+#     else:
+#         image_gray = image
+#
+#     hdbscan_clusterer = hdbscan.HDBSCAN(min_cluster_size=min_cluster_size, min_samples=min_samples)
+#
+#     image_flat = image_gray.reshape(-1, 1)
+#     cluster_labels = hdbscan_clusterer.fit_predict(image_flat)
+#     cluster_labels = cluster_labels.reshape(image_gray.shape)
+#
+#     # Create a mask where each cluster is assigned a unique color
+#     cluster_mask = np.zeros_like(image)
+#     unique_labels = np.unique(cluster_labels)
+#     for label in unique_labels:
+#         if label == -1:  # Noise points
+#             continue
+#         cluster_mask[cluster_labels == label] = np.random.randint(0, 255, 3)
+#
+#     # Overlay the cluster mask on the original image
+#     result = cv.addWeighted(image, 0.7, cluster_mask, 0.3, 0)
+#
+#     print(f'Type: {type(result)} Shape: {result.shape} Dtype: {result.dtype}')
+#     return result
 
 
 
