@@ -49,7 +49,7 @@ def anzahlFahrzeugeProRichtung(input_array):
 def anzahlFahrzeugeProMinute(videodauer_in_sec, CV_gesamt_erkannte_fahrzeuge, YOLO_gesamt_erkannte_fahrzeuge):
     # Labels für das Balkendiagramm
     labels = ['OpenCV', 'YOLO']
-    videodauer_in_min = videodauer_in_sec * 60
+    videodauer_in_min = (int(videodauer_in_sec) / 60) + 1
 
     # Daten für das Balkendiagramm (Anzahl der erkannten Fahrzeuge pro Minute)
     erkannte_fahrzeuge_pro_minute = [CV_gesamt_erkannte_fahrzeuge / videodauer_in_min, YOLO_gesamt_erkannte_fahrzeuge / videodauer_in_min]
@@ -62,5 +62,22 @@ def anzahlFahrzeugeProMinute(videodauer_in_sec, CV_gesamt_erkannte_fahrzeuge, YO
     plt.ylabel('Anzahl der erkannten Fahrzeuge pro Minute')
     plt.title('Erkannte Fahrzeuge pro Erkennungsmethode')
 
-    # Balkendiagramm anzeigen
+    # Aktiviere den interaktiven Modus
+    plt.ion()
+
+    # Zeige das Diagramm an
     plt.show()
+
+    # Halte das Diagramm geöffnet, bis 'q' gedrückt wird
+    while True:
+        # Warte auf Benutzereingabe
+        key = input("Press 'q' to close the plot: ")
+        
+        # Überprüfe, ob die Eingabe 'q' ist
+        if key.lower() == 'q':
+            break
+    # Deaktiviere den interaktiven Modus
+    plt.ioff()
+
+    # Schließe das Diagramm
+    plt.close()
