@@ -135,11 +135,13 @@ def main():
         if key == 27:   # Durch Drücken der ESC-Taste wird das Programm geschlossen
             break
 
+    cap.release()
+    cv.destroyAllWindows()
+
     end_time = time.time()  # Endzeit des Videos
     elapsed_time = end_time - start_time  # Dauer, die das Video abgespielt wurde
 
-    cap.release()
-    cv.destroyAllWindows()
+
 
     # Daten auswerten
     anzahlFahrzeugeProRichtung(ot.car_in_out)
