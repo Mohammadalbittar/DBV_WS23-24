@@ -44,7 +44,7 @@ def anzahlFahrzeugeProRichtung(input_array):
     ax.legend()  # Anzeige der Legende
 
     # Speichern des Diagramms als Bild
-    plt.savefig('resources/diag_anzahlFahrzeugeProRichtung', bbox_inches='tight')
+    plt.savefig('user_results/diagram_anzahlFahrzeugeProRichtung', bbox_inches='tight')
 
     # plt.show()  # Anzeigen des Diagramms
 
@@ -66,7 +66,7 @@ def anzahlFahrzeugeProMinute(videodauer_in_sec, CV_gesamt_erkannte_fahrzeuge, YO
     plt.title('Erkannte Fahrzeuge pro Erkennungsmethode')
 
     # Speichern des Diagramms als Bild
-    plt.savefig('resources/diag_anzahlFahrzeugeProMinute', bbox_inches='tight')
+    plt.savefig('user_results/diagram_anzahlFahrzeugeProMinute', bbox_inches='tight')
 
     # # Aktiviere den interaktiven Modus
     # plt.ion()
