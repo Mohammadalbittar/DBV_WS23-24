@@ -249,7 +249,7 @@ Bspw.
 - Backround Separation mit OpenCV Funktion(25% Jeder)
 - Backround Seperation mit auf anderen Wegen [eigene Implementierung] (Mostafa 100%)
 - automatische ROI über stillstehende Fahrzeuge (Mostafe 100%)
-- YOLOv8  (Jan 100%)
+- YOLOv8 und Tests  (Jan 100%)
 - Lukas Kanade Funktion und Tests (Jan 100%)
 - Erkennung von befahrenen Strecken (Mohammad 100%)
 - Statistische Auswertung (Mohammad 100%)
