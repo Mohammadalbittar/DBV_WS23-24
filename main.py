@@ -236,4 +236,4 @@ if __name__ == "__main__":
     # args = parser.parse_args()
 
     #main(args.param_str1, args.param_str2, args.param_bool1, args.param_bool2, args.param_int)
-    main('test', 'resources/video2.mp4', False, True, 10)
+    main('test', 'resources/test_video_3.mp4', False, True, 10)
