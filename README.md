@@ -202,4 +202,12 @@ Bspw.
 - Main-Funktion (Noah 25 %, )
 - Objekterkennung mit OpenCV (Noah 100 %)
 - Fahrzeugweg tracken mit OpenCV (Noah 100 %)
-- ...
+- 
+- 
+
+# Installation
+
+```
+pip install -r requirements.txt
+```
+
