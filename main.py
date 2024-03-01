@@ -18,8 +18,13 @@ def main():
 
     ######## Initialisierung Video Speichern als MP4########
     write_video = True
+    user_title = "M1MacPro_16Gb"
     if write_video:
-        timestamp = time.strftime("%Y%m%d-%H%M%S")
+        if user_title:
+            timestamp = user_title
+        else:
+            timestamp = time.strftime("%Y%m%d-%H%M%S")
+
         write_video_path = f'resources/output{timestamp}.mp4'
         fourcc = cv.VideoWriter_fourcc(*'mp4v')
         out_cv_vid = cv.VideoWriter(write_video_path, fourcc, 30.0, (1920, 1080))
@@ -186,7 +191,11 @@ def main():
         plt.xlabel('Frame')
         plt.ylabel('Time [ms]')
         plt.legend()
-        plt.savefig('resources/Zeitmessung.png')
+        if user_title:
+            graph_output_title = f'resources/graph_{user_title}.png'
+        else:
+            graph_output_title = f'resources/graph_{timestamp}.png'
+        plt.savefig(graph_output_title)
         out_cv_vid.release()
 
 
