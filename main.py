@@ -1,4 +1,4 @@
-import cv2
+import cv2 as cv
 
 from project.GUI2 import *
 from project.functions_n import *
@@ -22,7 +22,7 @@ def main():
         timestamp = time.strftime("%Y%m%d-%H%M%S")
         write_video_path = f'resources/output{timestamp}.mp4'
         fourcc = cv.VideoWriter_fourcc(*'mp4v')
-        out = cv.VideoWriter(write_video_path, fourcc, 30.0, (1920, 1080))
+        out_cv_vid = cv.VideoWriter(write_video_path, fourcc, 30.0, (1920, 1080))
         times_stat = [[], []]
 
 
@@ -141,7 +141,7 @@ def main():
 
         end_time_cv = time.time()*1000  # Endzeit der Zeitmessung
         elapsed_time_cv = end_time_cv - start_time_cv # Dauer, die die Bildverarbeitung benötigt hat
-        if write_video == True:
+        if write_video:
             times_stat[0].append(elapsed_time_cv)
         frame = add_text_to_frame(frame, f'{elapsed_time_cv:.2f} ms/frame')
 
@@ -150,15 +150,15 @@ def main():
         frame_yolo, ins, out = yolo_regio(frame_y)
         end_time_yolo = time.time()*1000  # Endzeit der Zeitmessung
         elapsed_time_yolo = end_time_yolo - start_time_yolo
-        if write_video == True:
+        if write_video:
             times_stat[1].append(elapsed_time_yolo)
         frame_yolo = add_text_to_frame(frame_yolo, f'{elapsed_time_yolo:.2f} ms/frame')
 
         ##### Ausgabe von Bildern #####
         frame = video_tiling_mixed(frame, frame_yolo, width, height)
 
-
-        out.write(frame)  # Schreibt das Bild in das Video
+        if write_video:
+            out_cv_vid.write(frame)  # Schreibt das Bild in das Video
         cv.imshow('Frame', frame)
         #cv.imshow('Maske', e_img)
         #cv.imshow('Region of Interest', roi)
@@ -175,7 +175,9 @@ def main():
     end_time = time.time()  # Endzeit des Videos
     elapsed_time = end_time - start_time  # Dauer, die das Video abgespielt wurde
 
-    if write_video == True:
+
+    ###### Zeitmessung Graph Speichern######
+    if write_video:
         x_values = range(1, len(times_stat[0])+1)
         plt.plot(x_values, times_stat[0], label='OpenCV')
         plt.plot(x_values, times_stat[1], label='YOLO')
@@ -185,7 +187,7 @@ def main():
         plt.ylabel('Time [ms]')
         plt.legend()
         plt.savefig('resources/Zeitmessung.png')
-        out.release()
+        out_cv_vid.release()
 
 
     # Daten auswerten
