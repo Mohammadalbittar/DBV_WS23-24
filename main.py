@@ -224,16 +224,16 @@ def main(uuser_title:str, path_to_file:str,  Live_testing:bool, user_live_output
 
 # Main
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Description of your script.")
-    parser.add_argument("param_str1", type=str, help="Name of User Output")
-    parser.add_argument("param_str2", type=str, help="path to video file")
-    parser.add_argument("param_bool1", type=lambda x: x.lower() == 'true',
-                        help="Output ('True' or 'False')")
-    parser.add_argument("param_bool2", type=lambda x: x.lower() == 'true',
-                        help="Live View ('True' or 'False')")
-    parser.add_argument("param_int", type=int, help="how many seconds of video to analyse")
+    # parser = argparse.ArgumentParser(description="Description of your script.")
+    # parser.add_argument("param_str1", type=str, help="Name of User Output")
+    # parser.add_argument("param_str2", type=str, help="path to video file")
+    # parser.add_argument("param_bool1", type=lambda x: x.lower() == 'true',
+    #                     help="Output ('True' or 'False')")
+    # parser.add_argument("param_bool2", type=lambda x: x.lower() == 'true',
+    #                     help="Live View ('True' or 'False')")
+    # parser.add_argument("param_int", type=int, help="how many seconds of video to analyse")
+    #
+    # args = parser.parse_args()
 
-    args = parser.parse_args()
-
-    main(args.param_str1, args.param_str2, args.param_bool1, args.param_bool2, args.param_int)
-    #main('test', 'resources/video2.mp4', False, True, 10)
+    #main(args.param_str1, args.param_str2, args.param_bool1, args.param_bool2, args.param_int)
+    main('test', 'resources/video2.mp4', False, True, 10)
