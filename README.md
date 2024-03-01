@@ -150,12 +150,6 @@ Für die Umsetzung mit Machine Learning wurde YoloV8 ausgewählt, da dieses verg
    
 
 
-
-
-* Welche Annahmen verwenden Sie? Welche Annahmen verletzen Sie? Unter welchen Bedingungen sollte Ihr Ansatz definitiv funktionieren, wo wird er voraussichtlich Schwierigkeiten haben?	**TEST BEDINGUNGEN SCHATTEN**
-* Erläutern Sie vor allem *warum* Sie etwas machen und nicht nur *was* sie machen.
-
-
 ## 4. Evaluation
 
 Die Funktion extract_background() funktioniert unter der Annahme, dass das Video ausreichende lang ist. Beim kurzen Videos, wo Autos lange am Ampel stehen, werden die Stehende Autos als Teil des Hintergrund erkannt.
