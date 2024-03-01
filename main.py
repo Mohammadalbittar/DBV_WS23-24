@@ -11,7 +11,7 @@ import argparse
 
 
 
-def main(uuser_title:str, Live_testing:bool):
+def main(uuser_title:str, path_to_file:str,  Live_testing:bool, user_live_output:bool, analysis_time:int):
     ######## Video Material ########
 
     path = r'resources/video2.mp4'  # Videopfad
@@ -35,7 +35,7 @@ def main(uuser_title:str, Live_testing:bool):
 
     ######## Initialisierung Video Speichern als MP4########
     write_video = Live_testing  # Wenn True, wird das Video gespeichert
-    output_video_time = 60 # in Sekunden
+    output_video_time = analysis_time # Wieviele Sekunden des Videos sollen analysiert werden
     user_title = uuser_title # Titel des Videos
     if write_video:
         print('Video Output turned on')
@@ -44,7 +44,7 @@ def main(uuser_title:str, Live_testing:bool):
         else:
             timestamp = time.strftime("%Y%m%d-%H%M%S")
 
-        write_video_path = f'resources/output{timestamp}.mp4'
+        write_video_path = f'user_results/output_{timestamp}.mp4'
         width_write = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
         height_write = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
         fps_write = cap.get(cv2.CAP_PROP_FPS)
@@ -172,8 +172,8 @@ def main(uuser_title:str, Live_testing:bool):
         ##### Ausgabe von Bildern #####
         frame = video_tiling_mixed(frame, frame_yolo, width, height)
 
-
-        #cv.imshow('Frame', frame)
+        if user_live_output:
+            cv.imshow('Frame', frame)
         #cv.imshow('Maske', e_img)
         #cv.imshow('Region of Interest', roi)
         #cv.imshow('Frame', frame)
@@ -210,9 +210,9 @@ def main(uuser_title:str, Live_testing:bool):
         plt.ylabel('Time [ms]')
         plt.legend()
         if user_title:
-            graph_output_title = f'resources/graph_{user_title}.png'
+            graph_output_title = f'user_results/graph_{user_title}.png'
         else:
-            graph_output_title = f'resources/graph_{timestamp}.png'
+            graph_output_title = f'user_results/graph_{timestamp}.png'
         plt.savefig(graph_output_title)
         out_cv_vid.release()
         print(f'Video saved as {write_video_path}')
@@ -225,9 +225,14 @@ def main(uuser_title:str, Live_testing:bool):
 # Main
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Description of your script.")
-    parser.add_argument("param_str", type=str, help="Description of the string parameter")
-    parser.add_argument("param_bool", type=bool, help="Description of the boolean parameter")
+    parser.add_argument("param_str1", type=str, help="Name of User Output")
+    parser.add_argument("param_str2", type=str, help="path to video file")
+    parser.add_argument("param_bool1", type=lambda x: x.lower() == 'true',
+                        help="Output ('True' or 'False')")
+    parser.add_argument("param_bool2", type=lambda x: x.lower() == 'true',
+                        help="Live View ('True' or 'False')")
+    parser.add_argument("param_int", type=int, help="how many seconds of video to analyse")
 
     args = parser.parse_args()
 
-    main(args.param_str, args.param_bool)
+    main(args.param_str1, args.param_str2, args.param_bool1, args.param_bool2, args.param_int)

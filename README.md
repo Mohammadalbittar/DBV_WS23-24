@@ -199,15 +199,42 @@ Bei starker Ungleicheit der Features behalten wir uns eine individuelle Notenver
 Bspw.
 
 - Systemarchitektur (Mohammad 0.0341 %)
-- Main-Funktion (Noah 25 %, )
+- Main-Funktion (Noah 25 %, Jan x %  )
 - Objekterkennung mit OpenCV (Noah 100 %)
 - Fahrzeugweg tracken mit OpenCV (Noah 100 %)
-- 
+- Backround Separation mit OpenCV Funktion()
+- Backround Seperation mit auf anderen Wegen
+- YOLOv8 (Jan x %)
+- Lukas Kanade Funktion und Tests (Jan 100%)
 - 
 
 # Installation
 
 ```
+git clone https://github.com/Mohammadalbittar/DBV_WS23-24.git
+```
+
+```
 pip install -r requirements.txt
+```
+
+## Terminal Start Syntax
+
+```
+python main.py "file title" "path_to_file" [True/False -> Save Video File] [True/False -> Live Output] [FPS != INT i.e. 30]
+```
+
+
+
+## For Video and System Performance Output
+Test the first 10 seconds of a demo video
+```
+python main.py "demo_title" 'resources/video2.mp4' True False 10
+```
+
+## For live Viewing with not Output
+Just live view the result with no Saved File. Press Escape to abort
+```
+python main.py "" 'resources/video2.mp4' False True 0
 ```
 
