@@ -304,6 +304,18 @@ def video_tiling_mixed(frame1, frame2, frame3, frame4, width, height):
 
 
 def resize_frame(frame, max_width, max_height):
+    """
+    Resize the given frame while maintaining its aspect ratio.
+
+    Args:
+        frame (numpy.ndarray): The input frame to be resized.
+        max_width (int): The maximum width of the resized frame.
+        max_height (int): The maximum height of the resized frame.
+
+    Returns:
+        numpy.ndarray: The resized frame.
+
+    """
     original_height, original_width = frame.shape[:2]
 
     # Calculate the scaling factors
@@ -324,17 +336,21 @@ def resize_frame(frame, max_width, max_height):
 
 def video_tiling_mixed(frame1, frame2, width, height):
     """
-    Combines four input frames into a single output frame using tiling.
+    Tiles two video frames horizontally and vertically to create a mixed output frame.
 
     Args:
-        frame1 (numpy.ndarray): The first input frame.
-        frame2 (numpy.ndarray): The second input frame.
-        width (int): The width of each input frame.
-        height (int): The height of each input frame.
+        frame1 (numpy.ndarray): The first video frame.
+        frame2 (numpy.ndarray): The second video frame.
+        width (int): The width of the output frame.
+        height (int): The height of the output frame.
 
     Returns:
-        numpy.ndarray: The output frame with the two input frames tiled together.
+        numpy.ndarray: The mixed output frame.
+
+    Raises:
+        None
     """
+
     max_height = 1080
     max_width = 1920
     frame1 = cv.cvtColor(frame1, cv.COLOR_GRAY2BGR) if len(frame1.shape) == 2 else frame1

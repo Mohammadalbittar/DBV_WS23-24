@@ -16,10 +16,12 @@ def main():
     url = 'https://www.youtube.com/watch?v=2X27I6BAJcI'  # URL für Testvideo
 
     ######## Initialisierung Video Speichern als MP4########
-    write_video = True
+    write_video = False
     if write_video:
+        timestamp = time.strftime("%Y%m%d-%H%M%S")
+        write_video_path = f'resources/output{timestamp}.mp4'
         fourcc = cv.VideoWriter_fourcc(*'mp4v')
-        out = cv.VideoWriter('output.mp4', fourcc, 30.0, (1920, 1080))
+        out = cv.VideoWriter(write_video_path, fourcc, 30.0, (1920, 1080))
 
 
 
