@@ -7,21 +7,21 @@ def anzahlFahrzeugeProRichtung(input_array):
     
     # Durchlaufen der Eingabearrays und Zählen der Fahrzeuge pro Richtung
     for array in input_array:
-        if array[0] == 1:
-            Richtung1_ein += 1
-        if array[0] == 2:
-            Richtung2_ein += 1
-        if array[0] == 3:
-            Richtung3_ein += 1
-        if array[0] == 4:
-            Richtung4_ein += 1
         if array[1] == 1:
-            Richtung1_aus += 1
+            Richtung1_ein += 1
         if array[1] == 2:
-            Richtung2_aus += 1
+            Richtung2_ein += 1
         if array[1] == 3:
-            Richtung3_aus += 1
+            Richtung3_ein += 1
         if array[1] == 4:
+            Richtung4_ein += 1
+        if array[2] == 1:
+            Richtung1_aus += 1
+        if array[2] == 2:
+            Richtung2_aus += 1
+        if array[2] == 3:
+            Richtung3_aus += 1
+        if array[2] == 4:
             Richtung4_aus += 1
         
     # Zusammenstellen der Gesamtanzahl pro Richtung (Einfahrt und Ausfahrt) in eine Liste
@@ -43,7 +43,10 @@ def anzahlFahrzeugeProRichtung(input_array):
     ax.set_xticklabels(labels)  # Beschriftungen der X-Achse
     ax.legend()  # Anzeige der Legende
 
-    plt.show()  # Anzeigen des Diagramms
+    # Speichern des Diagramms als Bild
+    plt.savefig('resources/diag_anzahlFahrzeugeProRichtung', bbox_inches='tight')
+
+    # plt.show()  # Anzeigen des Diagramms
 
 
 def anzahlFahrzeugeProMinute(videodauer_in_sec, CV_gesamt_erkannte_fahrzeuge, YOLO_gesamt_erkannte_fahrzeuge):
@@ -62,22 +65,25 @@ def anzahlFahrzeugeProMinute(videodauer_in_sec, CV_gesamt_erkannte_fahrzeuge, YO
     plt.ylabel('Anzahl der erkannten Fahrzeuge pro Minute')
     plt.title('Erkannte Fahrzeuge pro Erkennungsmethode')
 
-    # Aktiviere den interaktiven Modus
-    plt.ion()
+    # Speichern des Diagramms als Bild
+    plt.savefig('resources/diag_anzahlFahrzeugeProMinute', bbox_inches='tight')
 
-    # Zeige das Diagramm an
-    plt.show()
+    # # Aktiviere den interaktiven Modus
+    # plt.ion()
 
-    # Halte das Diagramm geöffnet, bis 'q' gedrückt wird
-    while True:
-        # Warte auf Benutzereingabe
-        key = input("Press 'q' to close the plot: ")
+    # # Zeige das Diagramm an
+    # plt.show()
+
+    # # Halte das Diagramm geöffnet, bis 'q' gedrückt wird
+    # while True:
+    #     # Warte auf Benutzereingabe
+    #     key = input("Press 'q' to close the plot: ")
         
-        # Überprüfe, ob die Eingabe 'q' ist
-        if key.lower() == 'q':
-            break
-    # Deaktiviere den interaktiven Modus
-    plt.ioff()
+    #     # Überprüfe, ob die Eingabe 'q' ist
+    #     if key.lower() == 'q':
+    #         break
+    # # Deaktiviere den interaktiven Modus
+    # plt.ioff()
 
-    # Schließe das Diagramm
-    plt.close()
+    # # Schließe das Diagramm
+    # plt.close()

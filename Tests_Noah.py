@@ -5,7 +5,7 @@ import numpy as np
 import time
 import project.functions_n as fn
 #import project.functions_j as fj
-import project.data_plot as data_plot
+import project.Plotten as plot
 
 ### TEST ###
 #Initialisierung
@@ -102,3 +102,5 @@ end_time = time.time()  # Endzeit des Videos
 elapsed_time = end_time - start_time    # Dauer, die das Video abgespielt wurde
 cap.release()
 cv.destroyAllWindows()
+plot.anzahlFahrzeugeProMinute(elapsed_time, len(ot.car_in_out), 0)
+plot.anzahlFahrzeugeProRichtung(ot.car_in_out)
