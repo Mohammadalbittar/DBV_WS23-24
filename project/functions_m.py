@@ -47,12 +47,14 @@ def extract_background(video_cap,sampling_interval_):
     # Return background image and no. of used frames
     return background_image, used_frames
 
-def find_Stats_point(video_cap,Background_image):
+def find_Stats_point(video_cap,Background_image,start_frame, end_frame):
     '''
     Find stationary points in a video using background subtraction and contour detection
 
     :param video_cap: Video capture object
     :param Background_image: Background image for background subtraction
+    :param start_frame: id Start Frame
+    :param end_frame: id end Frame
     :return:  List of stationary points (x,y - coordinates) and number of used frame
     '''
 
@@ -70,14 +72,17 @@ def find_Stats_point(video_cap,Background_image):
     # Get total number of frames in the video
     frame_count = int(cap.get(cv.CAP_PROP_FRAME_COUNT))
 
+
     used_frames = 1
     # Loop through each frame
-    for frame_number in range(frame_count):
+    for frame_number in range(end_frame-start_frame):
         # Read the current frame
+        cap.set(cv.CAP_PROP_POS_FRAMES,start_frame+frame_number)
         ret, frame = cap.read()
 
         # skip frame if not read successfully
         if not ret:
+            print("Frame skipped")
             continue
 
         # Apply background subtraction(KNN) and median blur to the current frame
@@ -94,7 +99,7 @@ def find_Stats_point(video_cap,Background_image):
         # Threshold the difference image
         diff[diff < 90] = 0
         diff[diff > 0] = 255
-        # Morphological operations (diltaion) on the difference image
+        # Morphological operations (dilation) on the difference image
         element = cv.getStructuringElement(cv.MORPH_DILATE,(7,7))
         diff = cv.dilate(diff,element)
         diff = cv.medianBlur(diff,7)  #2nd Mask

@@ -17,7 +17,7 @@ def main():
 
     ######## Initialisierung ########
     change_roi = False  # Wenn True, kann die roi mit der Funktion ot.set_roi angepasst werden
-    auto_calc_roi = False  # Wenn True, wird die ROI automatisch berechnet
+    auto_calc_roi = True  # Wenn True, wird die ROI automatisch berechnet
     # Wenn beide False, Standardwerte aus ot.roi[] verwendet
 
     ######## Initial Analysis ########
@@ -45,7 +45,7 @@ def main():
         # Berechne ROI
         # Finde stationäre Punkte
         start_time_roi = time.time()*1000
-        points_stat, used_frames_Stat = find_Stats_point(cap,background_image)
+        points_stat, used_frames_Stat = find_Stats_point(cap,background_image,34,1000)
         #points = np.load("Points_Stationary.npy")
         #print(points)
 
@@ -55,7 +55,7 @@ def main():
         elapsed_time_roi = end_time_roi - start_time_roi
         print(roi_eckpunkten)
 
-
+    '''
     #Kernals für die Maske
     fgbg = cv.createBackgroundSubtractorMOG2(detectShadows=True)
     kernal_Op = np.ones((3,3),np.uint8)  # Öffnung
@@ -162,7 +162,7 @@ def main():
     # Daten auswerten
     anzahlFahrzeugeProRichtung(ot.car_in_out)
     anzahlFahrzeugeProMinute(elapsed_time, len(ot.car_in_out), ins)
-
+'''
 # Main
 if __name__ == "__main__":
     main()
