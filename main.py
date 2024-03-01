@@ -34,13 +34,27 @@ def main():
         ot.set_roi(ot.Imgage_from_Video(path, 100))
 
     if auto_calc_roi:
-        #points_stat = find_Stats_point(cap,background_image)
-        background_image = extract_background(cap, 500)
+
+        # Berechne hintergrund image
+        start_time_bg = time.time()*1000
+        background_image, used_frames_bg = extract_background(cap, 500)
         # cv.imshow("Background",background_image)
-        points = np.load("Points_Stationary.npy")
+        end_time_bg = time.time()*1000
+        elapsed_time_bg = end_time_bg - start_time_bg
+
+        # Berechne ROI
+        # Finde stationäre Punkte
+        start_time_roi = time.time()*1000
+        points_stat, used_frames_Stat = find_Stats_point(cap,background_image)
+        #points = np.load("Points_Stationary.npy")
         #print(points)
-        intersections = find_rois_points(background_image,points)
-        print(intersections)
+
+        # Finde ROI Eckpunkten
+        roi_eckpunkten = find_rois_points(background_image,points_stat)
+        end_time_roi = time.time()*1000
+        elapsed_time_roi = end_time_roi - start_time_roi
+        print(roi_eckpunkten)
+
 
     #Kernals für die Maske
     fgbg = cv.createBackgroundSubtractorMOG2(detectShadows=True)
@@ -63,10 +77,10 @@ def main():
         frame_y = frame.copy()
 
         if auto_calc_roi: # Übergibt die entscheidenden Punkte aus der automatischen ROI Berechnung an die roi für ot
-            ot.roi[0] = intersections[3][0] # x1
-            ot.roi[1] = intersections[3][1] # y1
-            ot.roi[2] = intersections[0][0] # x2
-            ot.roi[3] = intersections[0][1] # y2
+            ot.roi[0] = roi_eckpunkten[3][0] # x1
+            ot.roi[1] = roi_eckpunkten[3][1] # y1
+            ot.roi[2] = roi_eckpunkten[0][0] # x2
+            ot.roi[3] = roi_eckpunkten[0][1] # y2
 
         roi = frame[ot.roi[1]:ot.roi[3], ot.roi[0]: ot.roi[2]] # Region_of_interest Format: y1, y2 : x1, x2
         #cv2.imshow('ROI', roi)
@@ -104,6 +118,8 @@ def main():
 
             print("")
         print(ot.car_in_out)
+
+        #data_plot.plotData(ot.car_in_out, cap)
 
         # Einzeichnen der Linien, an denen die Überquerung gezählt wird
         cv.line(frame, (ot.crossing_lines[0][0], ot.crossing_lines[0][1]), (ot.crossing_lines[0][2], ot.crossing_lines[0][3]), (0, 0, 255), 2)  # links
