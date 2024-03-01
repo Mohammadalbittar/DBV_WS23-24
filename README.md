@@ -103,7 +103,7 @@ Die erste Maske lässt sich durch hauptsächlich 2 OpenCV Funktionen berechnen, 
 <center><img src="resources/Differenz_Maske.PNG" alt="Differenz Maske" /></center>
 
 Von dieser Maske werden nun die bewegenden Autos subtrahiert. Durch createBackgroundSubtractorKNN() lassen sich die bewegenden Autos erkennen. Die erkannten Punkte werden in der Diff Maske identifiziert und auf Null gesetzt. Damit erhält man das folgende:
-<center><img src="resources/Auto_KNN.PNG" alt="Auto KNN Subtractor" /></center>
+<center><img src="resources/Auto_KNN.png" alt="Auto KNN Subtractor" /></center>
 <center><img src="resources/Auto_geloescht.png" alt="Bewegende Auto subtrahiert" /></center>
 
 Zum Erkennen von Autos wird die OpenCV Funktionen verwendet, findContours(), und wird die Fläche berechnet. Nur die Fläche über eine bestimmten Threshold, was empirisch ermittelt wurde, werden als Objekt erkannt. Der Grund dafür ist, das kleine unerwüschte Störungen nicht erkannt werden. Um die Contours wird ein Rechteck gezeichnet und der Mittelpunkt des Reckteckes berechnet, gezeichnet und gespeichert.
