@@ -10,17 +10,17 @@ import time
 
 
 def main():
-    ######## URL für Videos ########
+    ######## Video Material ########
 
-
+    path = r'resources/video2.mp4'  # Videopfad
     url = 'https://www.youtube.com/watch?v=2X27I6BAJcI'  # URL für Testvideo
 
     ######## Initialisierung ########
-    path = r'resources/video2.mp4'  # Videopfad
-    change_roi = False
+    change_roi = False  # Wenn True, kann die roi mit der Funktion ot.set_roi angepasst werden
 
     #Automatically calculate ROI
-    cal_roi = True
+    cal_roi = True  # Wenn True, wird die ROI automatisch berechnet
+
 
     ######## Initial Analysis ########
     cap = cv.VideoCapture(path)
@@ -131,7 +131,7 @@ def main():
 
         end_time = time.time()*1000  # Endzeit der Zeitmessung
         elapsed_time = end_time - start_time  # Dauer, die die Bildverarbeitung benötigt hat
-        frame = add_text_to_frame(frame, f'{elapsed_time:.2f} ms')
+        frame = add_text_to_frame(frame, f'{elapsed_time:.2f} ms/frame')
 
 
         ###### YOLO ######
@@ -139,7 +139,7 @@ def main():
         frame_yolo, ins, out = yolo_regio(frame_y)
         end_time = time.time()*1000  # Endzeit der Zeitmessung
         elapsed_time = end_time - start_time
-        frame_yolo = add_text_to_frame(frame_yolo, f'{elapsed_time:.2f} ms')
+        frame_yolo = add_text_to_frame(frame_yolo, f'{elapsed_time:.2f} ms/frame')
 
 
 
