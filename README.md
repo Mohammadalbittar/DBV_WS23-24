@@ -130,7 +130,7 @@ Für die Umsetzung mit Machine Learning wurde YoloV8 ausgewählt, da dieses verg
       - Funktion: **Plotten.py**. Diese Funktion wurde entwickelt, um zwei Funktionen zu implementieren, die in der Verkehrsanalyse verwendet werden können. Die erste Funktion anzahlFahrzeugeProRichtung dient dazu, die Anzahl der Fahrzeuge pro Richtung (Einfahrt und Ausfahrt) zu zählen und in einem Balkendiagramm darzustellen. Die zweite Funktion anzahlFahrzeugeProMinute zielt darauf ab, die Anzahl der erkannten Fahrzeuge pro Minute für zwei verschiedene Erkennungsmethoden (in diesem Fall OpenCV und YOLO) zu berechnen und ebenfalls in einem Balkendiagramm anzuzeigen.
       - Funktion: **data_plot.py**. Diese Funktion wurde entwickelt, um eine Echtzeitvisualisierung der Anzahl der detektierten Fahrzeuge über die Zeit mithilfe von OpenCV zu ermöglichen. Die Motivation hinter diesem Code liegt darin, einen interaktiven und visuell ansprechenden Ansatz zur Überwachung des Fahrzeugverkehrs in Echtzeit bereitzustellen. Dies kann nützlich sein für die Überwachung von Verkehrssituationen, Analyse des Fahrzeugflusses oder Evaluierung von Detektionsalgorithmen. Leider macht diese Funktion das Programm langsamer und funktioniert die Darstellung der Graphen manchmal nicht.
       - Funktion: **1_mohammad_funktion_befahrene_strecke.py**. Diese Funktion wurde entwickelt, um einen Algorithmus zur Extraktion einer befahrenen Strecke aus einem Video bereitzustellen. Die Motivation hinter diesem Code liegt darin, eine automatisierte Methode zu schaffen, um befahrene Bereiche in einem Video zu identifizieren und dadurch ein Region of Interest automatisch zu finden. 
-      - <center><img src="/Users/jansbiegay/PycharmProjects/DBV_WS23-24/assets/result_1_mohammad_funktion_befahrene_strecke.png" alt="resources/result_1_mohammad_funktion_befahrene_strecke.png" /> </center>
+      - <center><img src="resources/result_1_mohammad_funktion_befahrene_strecke.png" alt="resources/result_1_mohammad_funktion_befahrene_strecke.png" /> </center>
         Die Funktion hatte die Idee als Grundlage, ein Frame von einem beliebigen Frame mit festem Abstand abzuziehen, um als Resultat die unveränderten Pixels auf Null zu setzen und die Pixels, die eine Veränderung erfahren haben, in einem Array abzuspeichern. Danach werden die gespeicherten Arrays thresholder, um daraus binäre Werte zu bekommen. Danach gab es zwei Methoden die befahrenen Strecken zu extrahieren, entweder durch einfaches Addieren aller resultierenden Bilder mit anschließedem Thresholden, oder die einzelnen Pixels aller Bilder miteinander so zu vergleichen, dass die Pixels, die am meisten aufgetreten sind beizubehalten. Die erste Methode ist auf Grund nicht stabiler Aufnahme der Kreuzung gescheitert. Die zweite Methode hat nur an viel befahrenen Stellen gute Ergebnisse gezeigt, jedoch ist diese Methode extrem rechenintensiv aufgrund der Vergleich-Funktion.
       - Funktion: **2_mohammad_jan_function.py**. Diese Funktion basiert auf Grundlage der Funktion *motion_extraction*. Danach werden die resultierenden Bilder einfach in einer Schleife zu einen einzigen Array zusammen addiert. Auf dieses Array wird in jeder Iteration die morphologische Funktion 'Öffnen' angewendet. Nach einer bestimmten Anzahl an Iterationen wird das resultierende Bild thresholded. Danach werden die Ecken in diesem Bild mithilfe der Funktion 'CannyEdge' erkannt und noch mal die morphologische Funktion 'Öffnen' angewendet. Am Ende werden die wesentlichen Linien durch die Funktion 'HoughLinesP' erkannt. 
       - <center><img src="resources/result_2_mohammad_jan_function.png" alt="result_2_mohammad_jan_function" /></center>
@@ -142,7 +142,7 @@ Für die Umsetzung mit Machine Learning wurde YoloV8 ausgewählt, da dieses verg
   
    * Folgend sind die Ergebnisse der OPenCV Implementierung des finalen Programmes zu sehen: 
    
-      <center><img src="assets/Bildschirmfoto 2024-03-01 um 19.52.23.png" alt="Bildschirmfoto 2024-03-01 um 19.52.23" /></center>
+      <center><img src="resources/OpenCV_Ergebnis.png" alt="Bildschirmfoto 2024-03-01 um 19.52.23" /></center>
    
    * Ergebnisse von YoloV8
    
@@ -212,10 +212,15 @@ Dem zuvor beschrieben Objektverlust wirkt die Funktion *point_inside_polygon()* 
       -  OpenCV und ML könnten sich gegenseitig Ergänzen, sodass YoloV8 z.B. die Boundingbox bei teilweise Verdeckung nicht verliert und die klassifizierte Instanz erhalten bleibt
       -  ML Ansätze sind deutlich flexibler und können ohne größere Anpassungen universeller eingesetzt werden, bei OpenCV wäre eine zusätzliche Kontrolle und parametrierung notwenig
    
--  <u>Laufzeit:</u> **ERGÄNZEN**
+-  <u>Laufzeit:
    
-   -  Klassisch FPS
-   -  Machine Learning FPS (Loading + Inference + Postprocessing)
+   -  Macbook Pro M1 (links Test 1, rechts Test 2)
+   
+      <img src="user_results/graph_MBPro_Test1.png" width="425"/> <img src="user_results/graph_MBPro_Test2.png" width="425"/> 
+   
+   -  Machine Learning FPS (links Test 1, rechts Test 2)
+   
+      <img src="user_results/graph_RTX4070_Test1.png" width="425"/> <img src="user_results/graph_RTX4070_Test2.png" width="425"/> 
    
    
 
