@@ -52,9 +52,7 @@ Anschließend sollen die Ergebnisse von Verkehrsanalyse/Verkehrsfluss, die Video
 - Bachround Removal (https://www.youtube.com/watch?v=fEi63QB81ek)
 - OpenCV Doku Seite
 - ChatGPT
-- Foren: 
-   - ABC
-   - DEF
+- Hilfestellung für Machine Learning (https://supervision.roboflow.com/how_to/track_objects/#__tabbed_2_1)
 
 
 Klassische Ansätze [1] [2] versuchen bewegte Objekte über verschiedene Methoden wie z.B. Bewegung zu Segmentieren und zu erkennen. Ausgehend von dieser Idee, versuchen wir bewegte Objekte von einem unbewegten Hintergrund zu trennen. Relevant für unsere Arbeit war vorallem die Dokumentation von OpenCV und die Video Tutorials sowie die Dokumentation von YoloV8. Im Gegensatz zu den zu den genannten Quellen [1] [2] werden fertige Funktionen von OpenCV als Grundlage genutzt. 
