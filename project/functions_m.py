@@ -55,7 +55,7 @@ def find_Stats_point(video_cap,Background_image,start_frame, end_frame):
     :param Background_image: Background image for background subtraction
     :param start_frame: id Start Frame
     :param end_frame: id end Frame
-    :return:  List of stationary points (x,y - coordinates) and number of used frame
+    :return: List of stationary points (x,y - coordinates) and number of used frame
     '''
 
     # Intialize video capture, convert the background image to grayscale, and apply
@@ -160,7 +160,7 @@ def find_rois_points(background_image,Stat_points):
 
     :param background_image: Background image for processing
     :param Stat_points: List of stationary points (coordinates)
-    :return: 3 points corners of ROI
+    :return: 4 points corners of ROI
     '''
 
     # Extract background image and stationary points
