@@ -46,7 +46,7 @@ def anzahlFahrzeugeProRichtung(input_array):
     # Speichern des Diagramms als Bild
     plt.savefig('user_results/diagram_anzahlFahrzeugeProRichtung', bbox_inches='tight')
 
-    # plt.show()  # Anzeigen des Diagramms
+    plt.show()  # Anzeigen des Diagramms
 
 
 def anzahlFahrzeugeProMinute(videodauer_in_sec, CV_gesamt_erkannte_fahrzeuge, YOLO_gesamt_erkannte_fahrzeuge):
@@ -57,6 +57,7 @@ def anzahlFahrzeugeProMinute(videodauer_in_sec, CV_gesamt_erkannte_fahrzeuge, YO
     # Daten für das Balkendiagramm (Anzahl der erkannten Fahrzeuge pro Minute)
     erkannte_fahrzeuge_pro_minute = [CV_gesamt_erkannte_fahrzeuge / videodauer_in_min, YOLO_gesamt_erkannte_fahrzeuge / videodauer_in_min]
 
+    plt.figure()
     # Balkendiagramm plotten
     plt.bar(labels, erkannte_fahrzeuge_pro_minute, color=['red', 'blue'])
 
@@ -67,6 +68,8 @@ def anzahlFahrzeugeProMinute(videodauer_in_sec, CV_gesamt_erkannte_fahrzeuge, YO
 
     # Speichern des Diagramms als Bild
     plt.savefig('user_results/diagram_anzahlFahrzeugeProMinute', bbox_inches='tight')
+
+    plt.show()
 
     # # Aktiviere den interaktiven Modus
     # plt.ion()
